@@ -5,12 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
 import com.example.sleeper_frontend.databinding.FragmentDiaryBinding
 import com.example.sleeper_frontend.databinding.FragmentHomeBinding
 
 class DiaryFragment : Fragment(R.layout.fragment_diary) {
+
     private lateinit var binding: FragmentDiaryBinding
+    private val mainActivity = MainActivity()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,6 +24,12 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
         binding.btnShowMore.setOnClickListener {
             clickBtnPopup()
+        }
+
+        binding.btnSaveDiary.setOnClickListener {
+            val homeBFragment = HomeBFragment()
+            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+            transaction.replace(R.id.fl_container, homeBFragment).commit()
         }
 
         return binding.root

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
 import com.example.sleeper_frontend.databinding.FragmentHomeBinding
 
@@ -23,6 +24,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         binding.btnShowMore.setOnClickListener {
             clickBtnPopup()
+        }
+
+        binding.btnStartSleep.setOnClickListener {
+            val diaryFragment = DiaryFragment()
+            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+            transaction.replace(R.id.fl_container, diaryFragment).commit()
         }
 
         return binding.root
