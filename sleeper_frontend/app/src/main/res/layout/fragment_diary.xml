@@ -62,6 +62,8 @@
                 android:id="@+id/diary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="top"
+                android:paddingTop="27dp"
                 android:background="@drawable/diary_background"
                 android:hint="@string/diary_frag_hint"
                 android:fontFamily="@font/font_the140"
