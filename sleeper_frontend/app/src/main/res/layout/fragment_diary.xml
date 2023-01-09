@@ -68,9 +68,11 @@
                 android:textSize="12sp"
                 android:textColor="@color/purple"
                 android:textColorHint="@color/lilac"
-                android:inputType="textPersonName"
-                android:imeOptions="actionNext"
-                android:maxLength="200"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="false"
+                android:imeOptions="actionDone"
+                android:maxWidth="15dp"
+                android:singleLine="false"
                 android:paddingLeft="20dp"
                 android:paddingBottom="380dp"/>
 

@@ -18,33 +18,10 @@
             android:gravity="center"
             android:layout_marginTop="45dp">
 
-            <android.widget.Button
-                android:id="@+id/btn_show_more"
-                android:layout_width="24dp"
-                android:layout_height="25dp"
-                android:background="@drawable/ic_show_more"
-                android:layout_marginLeft="35dp"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style = "@style/MainLogo" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <android.widget.Button
-                android:layout_width="24dp"
-                android:layout_height="25dp"
-                android:background="@drawable/ic_issue"
-                android:layout_marginRight="35dp"/>
 
         </LinearLayout>
 

@@ -1,21 +1,29 @@
 package com.example.sleeper_frontend
 
-import android.app.Dialog
+
+
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.findNavController
 import com.example.sleeper_frontend.databinding.FragmentHomeBBinding
-import com.example.sleeper_frontend.databinding.FragmentHomeBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
     private lateinit var binding: FragmentHomeBBinding
-    private val mainActivity = MainActivity()
+    private lateinit var mainActivity : MainActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,9 +32,8 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
         binding = FragmentHomeBBinding.inflate(inflater, container, false)
 
-        binding.btnShowMore.setOnClickListener {
-            clickBtnPopup()
-        }
+        mainActivity.hideBottomNavigation(true)
+
         binding.btnStopSleep.setOnClickListener {
             val homeFragment = HomeFragment()
             val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
@@ -36,13 +43,10 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
         return binding.root
     }
 
-    private fun clickBtnPopup() {
-        val popup : PopupDialogFragment = PopupDialogFragment().getInstance()
-        activity?.supportFragmentManager?.let { fragmentManager ->
-            popup.show(
-                fragmentManager,
-                "tag"
-            )
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mainActivity.hideBottomNavigation(false)
     }
+
+
 }

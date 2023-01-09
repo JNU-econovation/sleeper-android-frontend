@@ -1,11 +1,16 @@
 package com.example.sleeper_frontend
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.sleeper_frontend.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,9 +55,11 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 true
+
             }
             binding.bnvMain.selectedItemId = R.id.home
         }
+
     }
 
     private fun changeFragment(fragment: Fragment) {
@@ -60,6 +67,13 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.fl_container, fragment)
             .commit()
+    }
+
+    fun hideBottomNavigation(bool: Boolean) {
+        if (bool)
+            binding.bnvMain.visibility = View.GONE
+        else
+            binding.bnvMain.visibility = View.VISIBLE
     }
 
 }

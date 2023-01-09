@@ -5,15 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.findNavController
 import com.example.sleeper_frontend.databinding.FragmentDiaryBinding
-import com.example.sleeper_frontend.databinding.FragmentHomeBinding
 
 class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
     private lateinit var binding: FragmentDiaryBinding
-    private val mainActivity = MainActivity()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +24,12 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
         binding.btnShowMore.setOnClickListener {
             clickBtnPopup()
         }
+
+        binding.diary.addTextChangedListener {
+            enableBtn(binding.diary)
+        }
+
+        binding.btnSaveDiary.isEnabled = false
 
         binding.btnSaveDiary.setOnClickListener {
             val homeBFragment = HomeBFragment()
@@ -49,6 +54,11 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     private fun saveDiary() {
         //네트워크 통신 구현
         //해당 날짜이면 diary 수정 가능하도록.
+    }
+
+    private fun enableBtn(v : EditText) {
+        binding.btnSaveDiary.isEnabled = v.length() > 0
+
     }
 
 }
