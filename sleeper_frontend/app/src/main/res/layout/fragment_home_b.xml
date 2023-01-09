@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="45dp">
+            android:layout_marginTop="46dp">
 
             <TextView
                 android:layout_width="wrap_content"
