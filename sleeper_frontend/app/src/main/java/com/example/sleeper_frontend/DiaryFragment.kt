@@ -24,9 +24,9 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
 
-        binding.btnSaveDiary.isEnabled = binding.diary.length() > 0
+//        binding.btnSaveDiary.isEnabled = binding.diary.length() > 0
 
-        readDiary()
+//        readDiary()
 
         binding.btnShowMore.setOnClickListener {
             clickBtnPopup()
@@ -59,12 +59,12 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     }
 
     private fun saveDiary() {
-        val diary = binding.diary.text.toString()
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putString("diary", diary)
-            apply()
-        }
+//        val diary = binding.diary.text.toString()
+//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+//        with (sharedPref.edit()) {
+//            putString("diary", diary)
+//            apply()
+//        }
     }
 
     private fun enableBtn(v : EditText) {
@@ -72,12 +72,12 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
     }
 
-    private fun readDiary() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        val defaultValue = ""
-        val diary = sharedPref.getString("diary", defaultValue)
-
-        binding.diary.setText(diary)
-    }
+//    private fun readDiary() {
+//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+//        val defaultValue = ""
+//        val diary = sharedPref.getString("diary", defaultValue)
+//
+//        binding.diary.setText(diary)
+//    }
 
 }
