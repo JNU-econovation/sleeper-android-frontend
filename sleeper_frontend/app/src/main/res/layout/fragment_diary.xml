@@ -64,19 +64,22 @@
                 android:layout_height="wrap_content"
                 android:gravity="top"
                 android:paddingTop="27dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="380dp"
+
                 android:background="@drawable/diary_background"
                 android:hint="@string/diary_frag_hint"
                 android:fontFamily="@font/font_the140"
                 android:textSize="12sp"
                 android:textColor="@color/purple"
                 android:textColorHint="@color/lilac"
+
                 android:inputType="textMultiLine"
                 android:scrollHorizontally="false"
                 android:imeOptions="actionDone"
-                android:maxWidth="15dp"
-                android:singleLine="false"
-                android:paddingLeft="20dp"
-                android:paddingBottom="380dp"/>
+                android:maxWidth="25dp"
+                android:singleLine="false" />
 
             <android.widget.Button
                 android:id="@+id/btn_save_diary"
