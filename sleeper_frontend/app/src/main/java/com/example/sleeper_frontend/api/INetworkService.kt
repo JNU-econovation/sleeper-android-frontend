@@ -1,6 +1,9 @@
 package com.example.sleeper_frontend.api
 
-import com.example.sleeper_frontend.dto.*
+import com.example.sleeper_frontend.dto.login.LoginRequest
+import com.example.sleeper_frontend.dto.login.LoginResponse
+import com.example.sleeper_frontend.dto.register.RegisterRequest
+import com.example.sleeper_frontend.dto.register.RegisterResponse
 import retrofit2.Call
 import retrofit2.http.*
 

@@ -1,4 +1,4 @@
-package com.example.sleeper_frontend.dto
+package com.example.sleeper_frontend.dto.login
 
 data class LoginResponse(
     var message : String,

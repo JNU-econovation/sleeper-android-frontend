@@ -1,4 +1,4 @@
-package com.example.sleeper_frontend.dto
+package com.example.sleeper_frontend.dto.register
 
 data class RegisterResponse(
     var message : String,
