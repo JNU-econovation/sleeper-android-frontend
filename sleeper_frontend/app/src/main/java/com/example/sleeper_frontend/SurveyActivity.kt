@@ -49,7 +49,8 @@ class SurveyActivity : AppCompatActivity() {
             TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                 setTimeText(btn, hourOfDay, minute)}
 
-        val timepicker = TimePickerDialog(this, timeSetListener, 8, 0, false)
+        val timepicker = TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,timeSetListener, 8, 0, false)
+        timepicker.window?.setBackgroundDrawableResource(android.R.color.transparent);
 
         timepicker.setTitle("목표 수면 시작 시간")
         timepicker.show()
