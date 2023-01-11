@@ -3,22 +3,19 @@ package com.example.sleeper_frontend
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.icu.util.ULocale.ROOT
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.ActivityLoginBinding
-import com.example.sleeper_frontend.dto.LoginRequest
-import com.example.sleeper_frontend.dto.LoginResponse
+import com.example.sleeper_frontend.dto.login.LoginRequest
+import com.example.sleeper_frontend.dto.login.LoginResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Url
-import java.util.Locale.ROOT
 
 class LoginActivity : AppCompatActivity() {
 
@@ -64,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getNetworkService(): INetworkService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://")
+            .baseUrl("localhost:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
