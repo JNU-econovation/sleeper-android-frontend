@@ -42,7 +42,7 @@
 
     <string name="home_frg_start_sleep">수면 시작</string>
 
-    <string name="diary_frag_diary">감사 일기</string>
+    <string name="diary_frag_diary">Thanks Diary</string>
     <string name="diary_frag_hint">오늘은 어떤 좋은 일이 있었나요? :)</string>
     <string name="diary_frag_save">등록</string>
 
