@@ -24,9 +24,7 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
 
-//        binding.btnSaveDiary.isEnabled = binding.diary.length() > 0
-
-//        readDiary()
+        binding.btnSaveDiary.isEnabled = false
 
         binding.btnShowMore.setOnClickListener {
             clickBtnPopup()
@@ -59,25 +57,12 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     }
 
     private fun saveDiary() {
-//        val diary = binding.diary.text.toString()
-//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-//        with (sharedPref.edit()) {
-//            putString("diary", diary)
-//            apply()
-//        }
+
     }
 
     private fun enableBtn(v : EditText) {
         binding.btnSaveDiary.isEnabled = v.length() > 0
 
     }
-
-//    private fun readDiary() {
-//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-//        val defaultValue = ""
-//        val diary = sharedPref.getString("diary", defaultValue)
-//
-//        binding.diary.setText(diary)
-//    }
 
 }
