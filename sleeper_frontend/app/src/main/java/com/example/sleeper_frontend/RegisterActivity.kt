@@ -1,13 +1,27 @@
 package com.example.sleeper_frontend
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.ActivityRegisterBinding
+import com.example.sleeper_frontend.dto.login.LoginRequest
+import com.example.sleeper_frontend.dto.login.LoginResponse
+import com.example.sleeper_frontend.dto.register.RegisterRequest
+import com.example.sleeper_frontend.dto.register.RegisterResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Long.parseLong
 import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
@@ -32,6 +46,21 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.btnOkay.isEnabled = false
 
+        addEditIdListener()
+
+        addEditPwListener()
+
+        addEditPwIdenListener()
+
+        addEditNickNameListener()
+
+        addEditAgeListener()
+
+        addBtnOkayListener()
+
+    }
+
+    private fun addEditIdListener() {
         binding.editId.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             val idPattern = "^[a-zA-Z]{8,20}$"
             val userId = binding.editId.text
@@ -53,7 +82,9 @@ class RegisterActivity : AppCompatActivity() {
             enableBtnTrue()
             enableBtnFalse()
         }
+    }
 
+    private fun addEditPwListener() {
         binding.editPassword.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             val pwPattern = "^.*(?=^.{8,20}$)(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&;]).*$"
             val userPw = binding.editPassword.text
@@ -73,7 +104,9 @@ class RegisterActivity : AppCompatActivity() {
             enableBtnTrue()
             enableBtnFalse()
         }
+    }
 
+    private fun addEditPwIdenListener() {
         binding.editPasswordIdentify.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             val userPw = binding.editPassword.text.toString()
             val userPwCheck = binding.editPasswordIdentify.text.toString()
@@ -93,6 +126,9 @@ class RegisterActivity : AppCompatActivity() {
             enableBtnTrue()
             enableBtnFalse()
         }
+    }
+
+    private fun addEditNickNameListener() {
 
         binding.editNickname.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             val nickNamePattern = "^[가-힣]{3,8}$"
@@ -113,7 +149,9 @@ class RegisterActivity : AppCompatActivity() {
             enableBtnTrue()
             enableBtnFalse()
         }
+    }
 
+    private fun addEditAgeListener() {
         binding.editAge.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             val agePattern = "^[0-9]{1,2}$"
             val userAge = binding.editAge.text
@@ -133,7 +171,6 @@ class RegisterActivity : AppCompatActivity() {
             enableBtnTrue()
             enableBtnFalse()
         }
-
     }
 
     private fun enableBtnTrue() {
@@ -161,6 +198,45 @@ class RegisterActivity : AppCompatActivity() {
                 return@enableBtnFalse
             }
         }
+    }
+
+    private fun getNetworkService(): INetworkService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("localhost:8080")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return retrofit.create(INetworkService::class.java)
+    }
+
+    private fun addBtnOkayListener() {
+        val userId : String = binding.editId.text.toString()
+        val userPassword : String = binding.editPassword.text.toString()
+        val userNickName : String = binding.editNickname.text.toString()
+        val temp : String = binding.editAge.text.toString()
+        val userAge : Long = parseLong(temp)
+
+        val registerResponseCall = getNetworkService().getRegisterResponse(
+            RegisterRequest(userId = userId, userPassword = userPassword,userNickName = userNickName, userAge = userAge)
+        )
+
+        registerResponseCall.enqueue(object : Callback<RegisterResponse> {
+            override fun onResponse(call : Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                if (response.isSuccessful) {
+
+                    val result : RegisterResponse? = response.body()
+                    val userId = result!!.userId
+
+                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                    startActivity(intent)
+
+                } else {
+
+
+                }
+            }
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {}
+        })
     }
 
 }

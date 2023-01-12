@@ -59,6 +59,7 @@
                     android:backgroundTint="@color/white"
                     android:hint="@string/register_scr_edittext_id_hint"
                     android:autofillHints="username"
+                    android:privateImeOptions="defaultInputmode=english"
                     android:inputType="textPersonName"
                     android:imeOptions="actionNext"/>
 
@@ -190,6 +191,7 @@
                 android:backgroundTint="@color/white"
                 android:hint="@string/register_scr_edittext_username_hint"
                 android:inputType="textPersonName"
+                android:privateImeOptions="defaultInputmode=korean"
                 android:imeOptions="actionNext"
                 android:autofillHints="AUTOFILL_HINT_PERSON_NAME" />
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -224,7 +226,7 @@
                 android:textColorHint="@color/white_hint"
                 android:backgroundTint="@color/white"
                 android:hint="@string/register_scr_edittext_age_hint"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:imeOptions="actionDone" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
