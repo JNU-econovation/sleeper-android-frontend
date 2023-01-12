@@ -2,27 +2,20 @@ package com.example.sleeper_frontend
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.NumberPicker
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import com.example.sleeper_frontend.databinding.ActivityRegisterBinding
 import java.util.regex.Pattern
-import kotlin.properties.Delegates
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityRegisterBinding
-    private lateinit var userId : String
-    private lateinit var userPassword : String
-    private lateinit var userNickName : String
-    private var userAge by Delegates.notNull<Long>()
+    private var checkArray : Array<Boolean> = Array(5) { false }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
 
@@ -36,13 +29,26 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.activityRegisterLayout.setBackgroundResource(R.drawable.login_background)
 
+        binding.btnOkay.isEnabled = false
+
         binding.editId.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             val idPattern = "^[a-zA-Z]{8,20}$"
             val userId = binding.editId.text
 
             if(!Pattern.matches(idPattern, userId) && !hasFocus) {
+
                 Toast.makeText(this@RegisterActivity, "아이디는 8~20자 영문 입력만 가능합니다.", Toast.LENGTH_SHORT).show()
+
+                checkArray[0] = false
+
+            } else {
+
+                checkArray[0] = true
+
             }
+
+            enableBtnTrue()
+            enableBtnFalse()
         }
 
         binding.editPassword.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -51,7 +57,15 @@ class RegisterActivity : AppCompatActivity() {
 
             if(!Pattern.matches(pwPattern, userPw) && !hasFocus) {
                 Toast.makeText(this@RegisterActivity, "비밀번호 조건을 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
+                checkArray[1] = false
+
+            } else {
+
+                checkArray[1] = true
+
             }
+            enableBtnTrue()
+            enableBtnFalse()
         }
 
         binding.editPasswordIdentify.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -60,7 +74,16 @@ class RegisterActivity : AppCompatActivity() {
 
             if(userPw != userPwCheck && !hasFocus) {
                 Toast.makeText(this@RegisterActivity, "입력한 비밀번호와 맞지 않습니다.", Toast.LENGTH_SHORT).show()
+                checkArray[2] = false
+
+            } else {
+
+                checkArray[2] = true
+
             }
+
+            enableBtnTrue()
+            enableBtnFalse()
         }
 
         binding.editNickname.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -69,17 +92,63 @@ class RegisterActivity : AppCompatActivity() {
 
             if(!Pattern.matches(nickNamePattern, userNickName) && !hasFocus) {
                 Toast.makeText(this@RegisterActivity, "닉네임은 3~8자리 한글만 가능합니다.", Toast.LENGTH_SHORT).show()
+                checkArray[3] = false
+
+            } else {
+
+                checkArray[3] = true
+
             }
+
+            enableBtnTrue()
+            enableBtnFalse()
         }
 
         binding.editAge.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            val nickNamePattern = "^[0-9]{1,2}$"
-            val userNickName = binding.editNickname.text
+            val agePattern = "^[0-9]{1,2}$"
+            val userAge = binding.editAge.text
 
-
-            if(!Pattern.matches(nickNamePattern, userNickName) && !hasFocus) {
+            if(!Pattern.matches(agePattern, userAge) && !hasFocus) {
                 Toast.makeText(this@RegisterActivity, "나이를 바르게 입력해주세요.", Toast.LENGTH_SHORT).show()
+                checkArray[4] = false
+
+            } else {
+
+                checkArray[4] = true
+
+            }
+
+            enableBtnTrue()
+            enableBtnFalse()
+        }
+
+    }
+
+    private fun enableBtnTrue() {
+
+        if(binding.editId.text.isEmpty()||
+                binding.editPassword.text.isEmpty()||
+                binding.editPasswordIdentify.text.isEmpty()||
+                binding.editNickname.text.isEmpty()||
+                binding.editAge.text.isEmpty()) {return}
+
+        checkArray.forEach {
+            if(!it) {
+                return@enableBtnTrue
+            }
+        }
+
+        binding.btnOkay.isEnabled = true
+    }
+
+    private fun enableBtnFalse() {
+        checkArray.forEach {
+            if(!it) {
+                binding.btnOkay.isEnabled = false
+
+                return@enableBtnFalse
             }
         }
     }
+
 }

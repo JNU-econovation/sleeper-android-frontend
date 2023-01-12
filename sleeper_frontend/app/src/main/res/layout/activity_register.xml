@@ -236,6 +236,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="5dp"
             android:layout_gravity="right"
+            android:textColor="@drawable/txt_color"
             style="@style/BtnOkayEnabled"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
