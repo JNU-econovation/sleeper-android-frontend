@@ -21,10 +21,11 @@
     <string name="register_scr_btn_verification">중복확인</string>
     <string name="register_scr_textview_password">비밀번호</string>
     <string name="register_scr_edittext_password_hint">영문, 숫자, 특수문자 모두 포함 8~20자</string>
+    <string name="register_scr_textview_special_word">특수 문자는 !, @, #, $, %, ^, &amp;, *, .만 이용 가능합니다.</string>
     <string name="register_scr_textview_password_verification">비밀번호 확인</string>
     <string name="register_scr_edittext_password_verification_hint">영문, 숫자, 특수문자 모두 포함 8~20자</string>
     <string name="register_scr_textview_username">닉네임</string>
-    <string name="register_scr_edittext_username_hint">영문, 숫자, 특수문자 모두 포함 8~20자</string>
+    <string name="register_scr_edittext_username_hint">한글 3~8자</string>
     <string name="register_scr_textview_age">나이</string>
     <string name="register_scr_edittext_age_hint">나이 선택</string>
     <string name="register_scr_finish">완료</string>
