@@ -6,6 +6,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import com.example.sleeper_frontend.databinding.ActivityRegisterBinding
 import java.util.regex.Pattern
 
@@ -46,7 +47,9 @@ class RegisterActivity : AppCompatActivity() {
                 checkArray[0] = true
 
             }
+        }
 
+        binding.editId.addTextChangedListener {
             enableBtnTrue()
             enableBtnFalse()
         }
@@ -64,6 +67,9 @@ class RegisterActivity : AppCompatActivity() {
                 checkArray[1] = true
 
             }
+        }
+
+        binding.editPassword.addTextChangedListener {
             enableBtnTrue()
             enableBtnFalse()
         }
@@ -81,7 +87,9 @@ class RegisterActivity : AppCompatActivity() {
                 checkArray[2] = true
 
             }
+        }
 
+        binding.editPasswordIdentify.addTextChangedListener {
             enableBtnTrue()
             enableBtnFalse()
         }
@@ -99,7 +107,9 @@ class RegisterActivity : AppCompatActivity() {
                 checkArray[3] = true
 
             }
+        }
 
+        binding.editNickname.addTextChangedListener {
             enableBtnTrue()
             enableBtnFalse()
         }
@@ -117,7 +127,9 @@ class RegisterActivity : AppCompatActivity() {
                 checkArray[4] = true
 
             }
+        }
 
+        binding.editAge.addTextChangedListener {
             enableBtnTrue()
             enableBtnFalse()
         }
