@@ -1,7 +1,5 @@
 package com.example.sleeper_frontend.dto.sleep
 
-import java.time.LocalTime
-
-data class getGoalTimeRequest(
+data class GetGoalTimeRequest(
     var userId : String
 )
