@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="120dp">
+    android:paddingTop="120dp" >
 
     <TextView
         android:id="@+id/logo"
@@ -225,8 +225,8 @@
                 android:backgroundTint="@color/white"
                 android:hint="@string/register_scr_edittext_age_hint"
                 android:inputType="textPersonName"
-                android:imeOptions="actionNext"
-                android:enabled="false"/>
+                android:imeOptions="actionDone" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <android.widget.Button
