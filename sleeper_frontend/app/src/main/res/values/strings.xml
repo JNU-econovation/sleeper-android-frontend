@@ -58,4 +58,13 @@
     <string name="calendar_frg_stats_score">%1$d%</string>
     <string name="calendar_frg_stats_score_text">수면 점수</string>
 
+    <string name="calendar_inside_frg_date">%1$s. %2$s. %3$s</string>
+    <string name="calendar_inside_frg_goal">목표 수면 시간</string>
+    <string name="calendar_inside_frg_goal_time">%1$s - %2$s</string>
+    <string name="calendar_inside_frg_real">실제 수면 시간</string>
+    <string name="calendar_inside_frg_real_time">%1$s - %2$s</string>
+    <string name="calendar_inside_frg_diary">주변에 좋은 사람들이 많다는게 감사하다.</string>
+    <string name="calendar_inside_frg_update">수정</string>
+    <string name="calendar_inside_frg_delete">삭제</string>
+
 </resources>

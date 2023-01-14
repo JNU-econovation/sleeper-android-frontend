@@ -1,0 +1,217 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalendarInsideFragment"
+    android:background="@color/black_50">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="45dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calendar_frg_title"
+            android:textColor="@color/logo"
+            android:textSize="16sp"
+            android:fontFamily="@font/font_the150"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="30dp" >
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="7dp"
+                android:layout_height="12dp"
+                android:background="@drawable/arrow_left"
+                android:layout_marginLeft="50dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/calendar_inside_frg_date"
+                android:textSize="20sp"
+                android:fontFamily="@font/font_the150"
+                android:textColor="#FFFFFF"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="7dp"
+                android:layout_height="12dp"
+                android:background="@drawable/arrow_right"
+                android:layout_marginRight="50dp"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <ImageView
+            android:layout_width="207dp"
+            android:layout_height="190dp"
+            android:src="@drawable/instance"
+            android:layout_marginTop="20dp"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignTop="true"
+                android:layout_marginTop="40dp">
+
+                <ImageView
+                    android:id="@+id/diary"
+                    android:layout_width="281dp"
+                    android:layout_height="245dp"
+                    android:src="@drawable/calendar_inside_frg_background_diary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/calendar_inside_frg_diary"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/font_the130"
+                    android:paddingTop="50dp"
+                    android:layout_alignTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/diary"
+                    android:layout_alignBottom="@+id/diary"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="17dp" >
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@color/transparent"
+                        android:text="@string/calendar_inside_frg_update"
+                        android:textColor="#9F9A67"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/font_the140" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@color/transparent"
+                        android:text="@string/calendar_inside_frg_delete"
+                        android:textColor="#C13636"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/font_the140"
+                        android:layout_marginLeft="15dp"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/show_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="231dp"
+                    android:layout_height="76dp"
+                    android:background="@drawable/calendar_inside_frg_background_time" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/font_the160"
+                            android:text="@string/calendar_inside_frg_goal"
+                            android:textColor="@color/goal_time"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/font_the150"
+                            android:text="@string/calendar_inside_frg_goal_time"
+                            android:textColor="@color/goal_time"
+                            android:textSize="12sp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:background="#DEDFEA" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/font_the160"
+                            android:text="@string/calendar_inside_frg_real"
+                            android:textColor="@color/real_time"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/font_the150"
+                            android:text="@string/calendar_inside_frg_real_time"
+                            android:textColor="@color/real_time"
+                            android:textSize="12sp" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>
