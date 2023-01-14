@@ -49,4 +49,13 @@
 
     <string name="home_b_frg_stop_sleep">수면 종료</string>
 
+    <string name="calendar_frg_title">Calendar</string>
+    <string name="calendar_frg_stats_title">이달의 통계</string>
+    <string name="calendar_frg_stats_goal">목표 수면 시간</string>
+    <string name="calendar_frg_stats_goal_time">%1$s - %2$s</string>
+    <string name="calendar_frg_stats_real">실제 수면 시간</string>
+    <string name="calendar_frg_stats_real_time">%1$s - %2$s</string>
+    <string name="calendar_frg_stats_score">%1$d%</string>
+    <string name="calendar_frg_stats_score_text">수면 점수</string>
+
 </resources>
