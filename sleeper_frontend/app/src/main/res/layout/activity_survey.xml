@@ -91,7 +91,9 @@
                     android:textSize="62sp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
+
         </FrameLayout>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -175,6 +177,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </FrameLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
+
     <android.widget.Button
         android:id="@+id/btnSurveyFinished"
         android:layout_width="108dp"
