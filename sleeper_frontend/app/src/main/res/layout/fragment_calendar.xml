@@ -22,17 +22,17 @@
             android:textSize="16sp"
             android:fontFamily="@font/font_the150"/>
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        <CalendarView
             android:id="@+id/calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:mcv_selectionColor="#E9F1F7"
             android:layout_marginTop="45dp"/>
 
         <FrameLayout
             android:layout_width="302dp"
             android:layout_height="167dp"
             android:background="@drawable/calendar_frag_outside_stats_background"
+            android:layout_marginTop="50dp"
             android:elevation="20dp">
 
             <androidx.appcompat.widget.LinearLayoutCompat

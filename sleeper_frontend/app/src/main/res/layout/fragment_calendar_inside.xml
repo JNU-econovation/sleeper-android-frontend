@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_alignTop="true"
+                    android:layout_alignParentTop="true"
                     android:layout_marginTop="40dp">
 
                     <ImageView
@@ -92,7 +92,7 @@
                         android:textSize="12sp"
                         android:fontFamily="@font/font_the130"
                         android:paddingTop="50dp"
-                        android:layout_alignTop="true"
+                        android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:paddingEnd="10dp"
                         android:paddingStart="10dp" />
@@ -211,7 +211,6 @@
                 </RelativeLayout>
 
             </RelativeLayout>
-
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
