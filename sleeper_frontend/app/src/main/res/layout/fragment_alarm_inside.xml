@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AlarmInsideFragment"
+    android:background="@color/black_50" >
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alarm_inside_frg_title"
+            android:textColor="@color/logo"
+            android:textSize="16sp"
+            android:fontFamily="@font/font_the150"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="45dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/alarm_inside_frg_textview_sleep_time"
+                    android:fontFamily="@font/font_the150"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <android.widget.Button
+                    android:layout_width="65dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/btn_set_time"
+                    android:elevation="10dp"
+                    android:text="@string/alarm_inside_frg_textview_set_time"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <FrameLayout
+                android:layout_width="270dp"
+                android:layout_height="83dp"
+                android:layout_marginTop="12dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/show_time_background" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="27sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="62sp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </FrameLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/seperator"
+            android:layout_marginTop="25dp"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/alarm_inside_frg_textview_wake_time"
+                    android:fontFamily="@font/font_the150"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <android.widget.Button
+                    android:layout_width="65dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/btn_set_time"
+                    android:elevation="10dp"
+                    android:text="@string/alarm_inside_frg_textview_set_time"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <FrameLayout
+                android:layout_width="270dp"
+                android:layout_height="83dp"
+                android:layout_marginTop="12dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/show_time_background" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:padding="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="27sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="62sp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </FrameLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alarm_inside_frg_textview_recommend_time"
+                android:textSize="15sp"
+                android:fontFamily="@font/font_the150"
+                android:textColor="#FFFFFF"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp" >
+                
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/rec1"
+                        android:layout_width="130dp"
+                        android:layout_height="57dp"
+                        android:background="@drawable/show_recommend_background" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="오전"
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:layout_alignLeft="@+id/rec1"
+                        android:layout_alignBottom="@+id/rec1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="08:00"
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        android:layout_alignRight="@+id/rec1"
+                        android:layout_alignBottom="@+id/rec1"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"/>
+                    
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/rec2"
+                        android:layout_width="130dp"
+                        android:layout_height="57dp"
+                        android:background="@drawable/show_recommend_background" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="오전"
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:layout_alignLeft="@+id/rec2"
+                        android:layout_alignBottom="@+id/rec2"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="08:00"
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        android:layout_alignRight="@+id/rec2"
+                        android:layout_alignBottom="@+id/rec2"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"/>
+
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/rec3"
+                        android:layout_width="130dp"
+                        android:layout_height="57dp"
+                        android:background="@drawable/show_recommend_background" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="오전"
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:layout_alignLeft="@+id/rec3"
+                        android:layout_alignBottom="@+id/rec3"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="08:00"
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        android:layout_alignRight="@+id/rec3"
+                        android:layout_alignBottom="@+id/rec3"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/rec4"
+                        android:layout_width="130dp"
+                        android:layout_height="57dp"
+                        android:background="@drawable/show_recommend_background" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="오전"
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:layout_alignLeft="@+id/rec4"
+                        android:layout_alignBottom="@+id/rec4"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="08:00"
+                        android:fontFamily="@font/font_the140"
+                        android:textColor="@color/white"
+                        android:textSize="30sp"
+                        android:layout_alignRight="@+id/rec4"
+                        android:layout_alignBottom="@+id/rec4"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"/>
+
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="108dp"
+            android:layout_height="32dp"
+            android:background="@drawable/btn_okay_enabled_true"
+            android:text="@string/alarm_inside_frg_textview_finish"
+            android:textColor="#2D2F6E"
+            android:textSize="13sp"
+            android:fontFamily="@font/font_the160"
+            android:layout_marginTop="30dp"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>

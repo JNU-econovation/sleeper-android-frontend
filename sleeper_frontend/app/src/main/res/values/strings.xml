@@ -72,4 +72,10 @@
     <string name="alarm_frg_textview_wake_time">오늘의 기상 시간</string>
     <string name="alarm_frg_textview_update">수정</string>
 
+    <string name="alarm_inside_frg_title">Alarm</string>
+    <string name="alarm_inside_frg_textview_sleep_time">오늘의 취침 시간</string>
+    <string name="alarm_inside_frg_textview_wake_time">오늘의 기상 시간</string>
+    <string name="alarm_inside_frg_textview_set_time">시간 설정</string>
+    <string name="alarm_inside_frg_textview_recommend_time">추천 기상 시간</string>
+    <string name="alarm_inside_frg_textview_finish">완료</string>
 </resources>
