@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.databinding.FragmentDiaryBinding
 
@@ -36,6 +37,8 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
         binding.btnSaveDiary.setOnClickListener {
             saveDiary()
+
+            activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
 
             val homeBFragment = HomeBFragment()
             val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()

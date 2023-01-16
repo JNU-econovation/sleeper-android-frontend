@@ -42,18 +42,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun changeFragment() {
-        //1. 시간 체크 오후 9시 ~ 오전 5시이면 diary
-        val time : Long = System.currentTimeMillis()
-        if (time > 170000 || time < 50000) {
-            val diaryFragment = DiaryFragment()
-            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.fl_container, diaryFragment).commit()
-        } else {
-            val homeBFragment = HomeBFragment()
-            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.fl_container, homeBFragment).commit()
-        }
-        //2. 감사일기 작성 여부 체크 : 네트워크 통신
+        val diaryFragment = DiaryFragment()
+        val transaction : FragmentTransaction? = activity?.supportFragmentManager?.beginTransaction()
 
+        transaction?.replace(R.id.fl_container, diaryFragment)?.addToBackStack("HomeFragment")?.commit()
     }
 }
