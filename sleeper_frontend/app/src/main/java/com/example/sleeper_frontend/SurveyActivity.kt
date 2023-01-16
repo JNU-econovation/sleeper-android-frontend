@@ -38,7 +38,7 @@ class SurveyActivity : AppCompatActivity() {
         }
 
         binding.btnSurveyFinished.setOnClickListener {
-            val intent = Intent(this@SurveyActivity, MainActivity::class.java)
+            val intent = Intent(this@SurveyActivity, LoginActivity::class.java)
             startActivity(intent)
         }
 
