@@ -216,7 +216,10 @@ class RegisterActivity : AppCompatActivity() {
         val temp : String = binding.editAge.text.toString()
         val userAge : Long = parseLong(temp)
 
-        val registerResponseCall = getNetworkService().getRegisterResponse(
+        val intent = Intent(this@RegisterActivity, SurveyActivity::class.java)
+        startActivity(intent)
+
+/*        val registerResponseCall = getNetworkService().getRegisterResponse(
             RegisterRequest(userId = userId, userPassword = userPassword,userNickName = userNickName, userAge = userAge)
         )
 
@@ -227,7 +230,7 @@ class RegisterActivity : AppCompatActivity() {
                     val result : RegisterResponse? = response.body()
                     val userId = result!!.userId
 
-                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                    val intent = Intent(this@RegisterActivity, SurveyActivity::class.java)
                     startActivity(intent)
 
                 } else {
@@ -236,7 +239,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {}
-        })
+        })*/
     }
 
 }
