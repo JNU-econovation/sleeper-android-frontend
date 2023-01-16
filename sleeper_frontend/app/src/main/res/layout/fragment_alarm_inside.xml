@@ -218,7 +218,7 @@
                         android:id="@+id/rec1"
                         android:layout_width="130dp"
                         android:layout_height="57dp"
-                        android:background="@drawable/show_recommend_background" />
+                        android:background="@drawable/btn_recommend" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -259,7 +259,7 @@
                         android:id="@+id/rec2"
                         android:layout_width="130dp"
                         android:layout_height="57dp"
-                        android:background="@drawable/show_recommend_background" />
+                        android:background="@drawable/btn_recommend" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -302,7 +302,7 @@
                         android:id="@+id/rec3"
                         android:layout_width="130dp"
                         android:layout_height="57dp"
-                        android:background="@drawable/show_recommend_background" />
+                        android:background="@drawable/btn_recommend" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -343,7 +343,7 @@
                         android:id="@+id/rec4"
                         android:layout_width="130dp"
                         android:layout_height="57dp"
-                        android:background="@drawable/show_recommend_background" />
+                        android:background="@drawable/btn_recommend" />
 
                     <TextView
                         android:layout_width="wrap_content"
