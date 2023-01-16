@@ -56,7 +56,10 @@ class RegisterActivity : AppCompatActivity() {
 
         addEditAgeListener()
 
-        addBtnOkayListener()
+        binding.btnOkay.setOnClickListener {
+            addBtnOkayListener()
+        }
+
 
     }
 
@@ -210,11 +213,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun addBtnOkayListener() {
-        val userId : String = binding.editId.text.toString()
+        /*val userId : String = binding.editId.text.toString()
         val userPassword : String = binding.editPassword.text.toString()
         val userNickName : String = binding.editNickname.text.toString()
         val temp : String = binding.editAge.text.toString()
-        val userAge : Long = parseLong(temp)
+        val userAge : Long = parseLong(temp)*/
 
         val intent = Intent(this@RegisterActivity, SurveyActivity::class.java)
         startActivity(intent)
