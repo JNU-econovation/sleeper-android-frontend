@@ -16,4 +16,5 @@
     <color name="black_50">#88000000</color>
     <color name="goal_time">#2C2F6E</color>
     <color name="real_time">#8478BD</color>
+    <color name="calendar_source">#E9F1F7</color>
 </resources>

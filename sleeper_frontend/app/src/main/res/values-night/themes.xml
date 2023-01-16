@@ -43,14 +43,26 @@
     </style>
 
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
-        <item name="colorAccent">#E9F1F7</item>
+        <item name="colorPrimary">@color/calendar_source</item>
+    </style>
+
+    <style name="CustomTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/calendar_source</item>
     </style>
 
     <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
-        <item name="android:textColor">#E9F1F7</item>
+        <item name="android:textColor">@color/calendar_source</item>
     </style>
 
+    <!-- 달력 안의 요일들에 적용되는 스타일 -->
     <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
-        <item name="android:textColor">#E9F1F7</item>
+        <item name="android:textColor">@color/calendar_source</item>
     </style>
+
+    <!-- 연, 월을 표시하는 헤더에 적용되는 스타일 -->
+    <style name="CalendarWidgetHeader">
+        <item name="android:textColor">@color/calendar_source</item>
+
+    </style>
+
 </resources>

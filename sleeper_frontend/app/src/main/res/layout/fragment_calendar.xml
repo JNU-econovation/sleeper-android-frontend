@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:plainpie="http://schemas.android.com/apk/res-auto"
     tools:context=".CalendarFragment"
     android:background="@color/black_50">
 
@@ -23,20 +22,31 @@
             android:textSize="16sp"
             android:fontFamily="@font/font_the150"/>
 
-        <CalendarView
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:layout_marginTop="30dp"
+            android:id="@+id/calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp"
+            android:theme="@style/CalenderViewCustom"
+            app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
+            app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+            app:mcv_showOtherDates="none"
+            app:mcv_showWeekDays="true" />
+
+        <!--<CalendarView
             android:id="@+id/calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
             android:theme="@style/CalenderViewCustom"
             android:dateTextAppearance="@style/CalenderViewDateCustomText"
-            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText" />
+            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText" />-->
 
         <FrameLayout
             android:layout_width="302dp"
             android:layout_height="167dp"
             android:background="@drawable/calendar_frag_outside_stats_background"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:elevation="20dp">
 
             <androidx.appcompat.widget.LinearLayoutCompat
