@@ -32,6 +32,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun clickBtnPopup() {
         val popup : PopupDialogFragment = PopupDialogFragment().getInstance()
+
        activity?.supportFragmentManager?.let { fragmentManager ->
            popup.show(
                fragmentManager,

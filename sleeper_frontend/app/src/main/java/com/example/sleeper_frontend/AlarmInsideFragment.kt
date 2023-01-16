@@ -1,12 +1,12 @@
 package com.example.sleeper_frontend
 
-import android.app.TimePickerDialog
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.databinding.FragmentAlarmInsideBinding
 
 class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
@@ -27,6 +27,14 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
         binding.btnSetWakeTime.setOnClickListener {
             showTimePicker(it)
+        }
+
+        binding.btnFinish.setOnClickListener {
+            val alarmFragment = AlarmFragment()
+            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+            transaction
+                .replace(R.id.fl_container, alarmFragment)
+                .commit()
         }
 
         return binding.root

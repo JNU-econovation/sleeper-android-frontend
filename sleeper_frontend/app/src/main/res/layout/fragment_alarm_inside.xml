@@ -382,6 +382,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_finish"
             android:layout_width="108dp"
             android:layout_height="32dp"
             android:background="@drawable/btn_okay_enabled_true"
