@@ -1,5 +1,7 @@
 package com.example.sleeper_frontend.api
 
+import com.example.sleeper_frontend.dto.diary.SaveDiaryRequest
+import com.example.sleeper_frontend.dto.diary.SaveDiaryResponse
 import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.example.sleeper_frontend.dto.register.RegisterRequest
@@ -19,4 +21,8 @@ interface INetworkService {
         @Body loginRequest : LoginRequest
     ): Call<LoginResponse>
 
+    @POST("/diaries")
+    fun getDiaryPk(
+        @Body saveDiaryRequest: SaveDiaryRequest
+    ): Call<SaveDiaryResponse>
 }
