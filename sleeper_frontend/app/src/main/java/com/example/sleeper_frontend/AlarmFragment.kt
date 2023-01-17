@@ -21,7 +21,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         binding.btnUpdate.setOnClickListener {
             val alarmInsideFragment = AlarmInsideFragment()
             val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.fl_container, alarmInsideFragment).commit()
+            transaction.replace(R.id.fl_container, alarmInsideFragment).addToBackStack("AlarmFragment").commit()
         }
         return binding.root
     }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.databinding.FragmentCalendarBinding
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -38,7 +39,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
             val calendarInsideFragment = CalendarInsideFragment()
             val transaction: FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.fl_container, calendarInsideFragment).commit()
+            transaction.replace(R.id.fl_container, calendarInsideFragment).addToBackStack("CalendarFragment").commit()
         }
 
         return binding.root

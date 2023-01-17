@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.databinding.FragmentAlarmInsideBinding
 
@@ -30,6 +31,10 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
         }
 
         binding.btnFinish.setOnClickListener {
+            activity?.supportFragmentManager?.popBackStack("AlarmFragment",
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
+
             val alarmFragment = AlarmFragment()
             val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
             transaction
