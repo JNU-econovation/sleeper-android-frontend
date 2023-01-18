@@ -17,6 +17,8 @@ import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentAlarmInsideBinding
 import com.example.sleeper_frontend.dto.sleep.GetRecommendationResponse
 import com.example.sleeper_frontend.dto.sleep.GetSettingTimeResponse
+import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeRequest
+import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -56,15 +58,6 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
         binding.btnFinish.setOnClickListener {
             saveAlarmTime()
-            activity?.supportFragmentManager?.popBackStack("AlarmFragment",
-                FragmentManager.POP_BACK_STACK_INCLUSIVE
-            )
-
-            val alarmFragment = AlarmFragment()
-            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction
-                .replace(R.id.fl_container, alarmFragment)
-                .commit()
         }
 
         return binding.root
@@ -292,4 +285,54 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
         }
     }
 
+    private fun saveAlarmTime() {
+        Log.d("hyeon", "tryNetwork작동")
+        val sleepTime : String = binding.textviewAlarmInsideSleepTime.text.toString()
+        val wakeTime : String = binding.textviewAlarmInsideWakeTime.text.toString()
+
+        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+
+        Log.d("hyeon","변수 초기화")
+
+        val setAlarmTimeResponseCall : Call<SetAlarmTimeResponse> = getNetworkService().setAlarmTime(
+            userPk = userPk, SetAlarmTimeRequest(sleepTime = sleepTime, wakeTime = wakeTime, userPk = userPk)
+        )
+
+        Log.d("hyeon","call객체 초기화")
+        setAlarmTimeResponseCall.enqueue(object : Callback<SetAlarmTimeResponse> {
+            override fun onResponse(call : Call<SetAlarmTimeResponse>, response: Response<SetAlarmTimeResponse>) {
+                Log.d("hyeon", "통신 성공")
+                if (response.isSuccessful && response.body() != null) {
+
+                    val result: SetAlarmTimeResponse = response.body()!!
+                    val resultCode: String = response.code().toString()
+
+                    Log.d("hyeon", resultCode)
+                    val success: String = "200";
+                    val badRequest: String = "300"
+                    val internalServerError: String = "500"
+
+
+                    if (resultCode == success) {
+                        activity?.supportFragmentManager?.popBackStack("AlarmFragment",
+                            FragmentManager.POP_BACK_STACK_INCLUSIVE
+                        )
+
+                        val alarmFragment = AlarmFragment()
+                        val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+                        transaction
+                            .replace(R.id.fl_container, alarmFragment)
+                            .commit()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<SetAlarmTimeResponse>, t: Throwable) {
+                Log.d("hyeon", "통신 실패")
+                val string = t.message.toString()
+                Log.d("hyeon", string)
+                Log.d("hyeon", setAlarmTimeResponseCall.toString())
+            }
+        })
+    }
 }

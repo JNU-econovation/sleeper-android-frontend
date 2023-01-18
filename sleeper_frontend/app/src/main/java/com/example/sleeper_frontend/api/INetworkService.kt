@@ -51,6 +51,12 @@ interface INetworkService {
         @Query("setSleepTime") setSleepTime : String
     ): Call<GetRecommendationResponse>
 
+    @PUT("sleep/{userPk}/setTime")
+    fun setAlarmTime(
+        @Path("userPk") userPk : Long,
+        @Body setAlarmTimeRequest : SetAlarmTimeRequest
+    ): Call<SetAlarmTimeResponse>
+
 
 
 }
