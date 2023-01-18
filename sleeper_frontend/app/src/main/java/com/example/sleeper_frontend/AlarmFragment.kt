@@ -10,8 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentAlarmBinding
-import com.example.sleeper_frontend.dto.sleep.GetGoalTimeRequest
-import com.example.sleeper_frontend.dto.sleep.GetGoalTimeResponse
+import com.example.sleeper_frontend.dto.sleep.GetSettingTimeResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -31,7 +30,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         savedInstanceState: Bundle?
     ): View? {
 
-//        tryNetwork()
+        tryNetwork()
 
         binding = FragmentAlarmBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
@@ -65,27 +64,23 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         return retrofit.create(INetworkService::class.java)
     }
 
-/*    private fun tryNetwork() {
+    private fun tryNetwork() {
         Log.d("hyeon", "tryNetwork작동")
 
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk : Long = sharedPref?.getLong("userPk", 1L)
+        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
 
         Log.d("hyeon","변수 초기화")
 
-        val initRequest = GetGoalTimeRequest(userPk = userPk)
-
-        val getGoalTimeResponseCall : Call<GetGoalTimeResponse> = getNetworkService().getGoalTime(
-            initRequest
-        )
+        val getSettingTimeResponseCall : Call<GetSettingTimeResponse> = getNetworkService().getSettingTime()
 
         Log.d("hyeon","call객체 초기화")
-        getGoalTimeResponseCall.enqueue(object : Callback<GetGoalTimeResponse> {
-            override fun onResponse(call : Call<GetGoalTimeResponse>, response: Response<GetGoalTimeResponse>) {
+        getSettingTimeResponseCall.enqueue(object : Callback<GetSettingTimeResponse> {
+            override fun onResponse(call : Call<GetSettingTimeResponse>, response: Response<GetSettingTimeResponse>) {
                 Log.d("hyeon", "통신 성공")
                 if (response.isSuccessful && response.body() != null) {
 
-                    val result: GetGoalTimeResponse? = response.body()
+                    val result: GetSettingTimeResponse = response.body()!!
                     val resultCode: String = response.code().toString()
 
                     Log.d("hyeon", resultCode)
@@ -96,42 +91,41 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
 
                     if (resultCode == success) {
 
+                        val setSleepTime = result.setSleepTime
+                        val setWakeTime = result.setWakeTime
                         //보여줘야해. 화면에 오늘의 취침, 오늘의 기상 시간.
-                        val goalSleepTime = result?.goalSleepTime
-                        val goalWakeTime = result?.goalWakeTime
+                        val setSleepTimeHour = setSleepTime.substring(0 until 2)
+                        val setSleepTimeMin = setSleepTime.substring(3 until 5)
+                        val setWakeTimeHour = setWakeTime.substring(0 until 2)
+                        val setWakeTimeMin = setWakeTime.substring(3 until 5)
 
-                        val goalSleepTimeHour = goalSleepTime?.substring(0 until 2)
-                        val goalSleepTimeMin = goalSleepTime?.substring(3 until 5)
-                        val goalWakeTimeHour = goalWakeTime?.substring(0 until 2)
-                        val goalWakeTimeMin = goalWakeTime?.substring(3 until 5)
-
-                        showGoalTime(goalSleepTimeHour, goalSleepTimeMin, goalWakeTimeHour, goalWakeTimeMin)
+                        showSettingTime(setSleepTimeHour, setSleepTimeMin, setWakeTimeHour, setWakeTimeMin)
                     }
                 }
             }
-            override fun onFailure(call: Call<GetGoalTimeResponse>, t: Throwable) {
+            override fun onFailure(call: Call<GetSettingTimeResponse>, t: Throwable) {
                 Log.d("hyeon", "통신 실패")
                 val string = t.message.toString()
                 Log.d("hyeon", string)
-                Log.d("hyeon", getGoalTimeResponseCall.toString())
+                Log.d("hyeon", getSettingTimeResponseCall.toString())
             }
         })
     }
 
-    fun showGoalTime(goalSleepTimeHour : String?, goalSleepTimeMin : String?, goalWakeTimeHour : String?, goalWakeTimeMin : String?) {
-        binding.sleepMeridiem.text = getMeridiem(goalSleepTimeHour)
-        binding.wakeMeridiem.text = getMeridiem(goalWakeTimeHour)
+    fun showSettingTime(setSleepTimeHour : String, setSleepTimeMin : String, setWakeTimeHour : String, setWakeTimeMin : String) {
+        binding.sleepMeridiem.text = getMeridiem(setSleepTimeHour)
+        binding.wakeMeridiem.text = getMeridiem(setWakeTimeHour)
 
-        val goalSleepTimeHour = set24HourModeFalse(goalSleepTimeHour)
-        binding.sleepTime.text = getString(R.string.alarm_frg_textview_time, goalSleepTimeHour, goalSleepTimeMin)
-        val goalWakeTimeHour = set24HourModeFalse(goalWakeTimeHour)
-        binding.sleepTime.text = getString(R.string.alarm_frg_textview_time, goalWakeTimeHour, goalWakeTimeMin)
+        val setSleepTimeHour = set24HourModeFalse(setSleepTimeHour)
+        binding.sleepTime.text = getString(R.string.alarm_frg_textview_time, setSleepTimeHour, setSleepTimeMin)
+        val setWakeTimeHour = set24HourModeFalse(setWakeTimeHour)
+        binding.sleepTime.text = getString(R.string.alarm_frg_textview_time, setWakeTimeHour, setWakeTimeMin)
     }
 
-    private fun getMeridiem(goalHour : String?) : String {
-        val goalHour = parseInt(goalHour)
+    private fun getMeridiem(settingHour : String?) : String {
+        val settingHour = parseInt(settingHour)
 
-        val meridiem : String = if (goalHour > 12) {
+        val meridiem : String = if (settingHour > 12) {
             "오후"
         } else {
             "오전"
@@ -140,13 +134,13 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         return meridiem
     }
 
-    private fun set24HourModeFalse(goalHour: String?): String {
-        var goalHour = parseInt(goalHour)
+    private fun set24HourModeFalse(settingHour: String?): String {
+        var settingHour = parseInt(settingHour)
 
-        if (goalHour > 13) {
-            goalHour -= 12
+        if (settingHour > 13) {
+            settingHour -= 12
         }
 
-        return goalHour.toString()
-    }*/
+        return settingHour.toString()
+    }
 }

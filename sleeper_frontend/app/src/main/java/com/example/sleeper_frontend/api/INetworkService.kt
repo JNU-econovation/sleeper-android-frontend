@@ -1,8 +1,6 @@
 package com.example.sleeper_frontend.api
 
-import com.example.sleeper_frontend.dto.diary.CheckDiaryResponse
-import com.example.sleeper_frontend.dto.diary.SaveDiaryRequest
-import com.example.sleeper_frontend.dto.diary.SaveDiaryResponse
+import com.example.sleeper_frontend.dto.diary.*
 import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.example.sleeper_frontend.dto.register.RegisterRequest
@@ -23,6 +21,11 @@ interface INetworkService {
         @Body loginRequest : LoginRequest
     ): Call<LoginResponse>
 
+    @GET("check")
+    fun checkDiaryExistence(
+        @Query("userPk") userPk : Long
+    ): Call<CheckDiaryResponse>
+
     @POST("diaries")
     fun getDiaryPk(
         @Body saveDiaryRequest: SaveDiaryRequest
@@ -31,17 +34,23 @@ interface INetworkService {
     @PUT("sleeps/{userPk}/actualTime")
     fun putActualWakeTime(
         @Path("userPk") userPk : Long,
-        @Body setWakeTimeRequset : SetWakeTimeRequest
+        @Body setWakeTimeRequest : SetWakeTimeRequest
     ): Call<SetWakeTimeResponse>
 
-    @GET("users/time")
-    fun getGoalTime(
-        @Body getGoalTimeRequest: GetGoalTimeRequest
-    ): Call<GetGoalTimeResponse>
+    @GET("diaries/{diaryPk}")
+    fun updateDiary(
+        @Path("diaryPk") diaryPk : Long,
+        @Body updateDiaryRequest : UpdateDiaryRequest
+    ): Call<UpdateDiaryResponse>
 
-    @GET("check")
-    fun checkDiaryExistence(
-        @Query("userPk") userPk : Long
-    ): Call<CheckDiaryResponse>
+    @GET("sleeps/{userPk}/setTime")
+    fun getSettingTime(): Call<GetSettingTimeResponse>
+
+    @GET("sleeps/recommend")
+    fun getRecommendTime(
+        @Query("setSleepTime") setSleepTime : String
+    ): Call<GetRecommendationResponse>
+
+
 
 }
