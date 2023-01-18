@@ -12,6 +12,10 @@ import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.ActivityLoginBinding
 import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,8 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
         val loginPref = getPreferences(Context.MODE_PRIVATE)
 
-
-        if(loginPref != null) {
+        if(loginPref.getString("userId",null) != null) {
             init(loginPref)
         }
 
@@ -54,17 +57,30 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun init(sp : SharedPreferences) {
-        val userId = sp.getString("userId", "")
-        val userPw = sp.getString("userPw", "")
+        val userId = sp.getString("userId", null)
+        val userPw = sp.getString("userPw", null)
 
         binding.editId.setText(userId)
         binding.editPw.setText(userPw)
     }
 
     private fun getNetworkService(): INetworkService {
+        val interceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
+        val gson : Gson = GsonBuilder()
+            .setLenient()
+            .create()
+
         val retrofit = Retrofit.Builder()
-            .baseUrl("localhost:8080")
-            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://192.168.21.2:8082/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(client)
             .build()
 
         return retrofit.create(INetworkService::class.java)
@@ -82,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
                     val result : LoginResponse? = response.body()
                     val accessToken : String = result!!.accessToken
                     val refreshToken : String = result.refreshToken
-                    /*val userPk : String = result.userPk*/
+                    val userPk : Long = result.userPk
 
                     if (response.code() == 200) {
                         val loginPref = getPreferences(Context.MODE_PRIVATE)
@@ -92,13 +108,17 @@ class LoginActivity : AppCompatActivity() {
                             commit()
                         }
 
+                        val sharedPref = getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                        sharedPref.edit().run{
+                            putLong("userPk", userPk)
+                            putString("accessToken", accessToken)
+                            putString("refreshToken", refreshToken)
+                            commit()
+                        }
+
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
 
-                       /* val sharedPref = getSharedPreferences("user_info", Context.MODE_PRIVATE)
-                        sharedPref.edit().run {
-                            putLong("userPk", userPk)
-                        }*/
                     }
                 } else {
 
@@ -106,7 +126,12 @@ class LoginActivity : AppCompatActivity() {
 
                 }
             }
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {}
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.d("hyeon", "통신 실패")
+                val string = t.message.toString()
+                Log.d("hyeon", string)
+                Log.d("hyeon", loginResponseCall.toString())
+            }
         })
     }
 
