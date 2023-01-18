@@ -6,6 +6,8 @@ import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.example.sleeper_frontend.dto.register.RegisterRequest
 import com.example.sleeper_frontend.dto.register.RegisterResponse
+import com.example.sleeper_frontend.dto.sleep.SetWakeTimeRequest
+import com.example.sleeper_frontend.dto.sleep.SetWakeTimeResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -25,4 +27,10 @@ interface INetworkService {
     fun getDiaryPk(
         @Body saveDiaryRequest: SaveDiaryRequest
     ): Call<SaveDiaryResponse>
+
+    @PUT("sleeps/{userPk}/actualTime")
+    fun putActualWakeTime(
+        @Path("userPk") userPk : Long,
+        @Body setWakeTimeRequset : SetWakeTimeRequest
+    ): Call<SetWakeTimeResponse>
 }
