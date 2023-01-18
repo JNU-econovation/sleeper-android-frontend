@@ -1,15 +1,13 @@
 package com.example.sleeper_frontend.api
 
+import com.example.sleeper_frontend.dto.diary.CheckDiaryResponse
 import com.example.sleeper_frontend.dto.diary.SaveDiaryRequest
 import com.example.sleeper_frontend.dto.diary.SaveDiaryResponse
 import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.example.sleeper_frontend.dto.register.RegisterRequest
 import com.example.sleeper_frontend.dto.register.RegisterResponse
-import com.example.sleeper_frontend.dto.sleep.GetGoalTimeRequest
-import com.example.sleeper_frontend.dto.sleep.GetGoalTimeResponse
-import com.example.sleeper_frontend.dto.sleep.SetWakeTimeRequest
-import com.example.sleeper_frontend.dto.sleep.SetWakeTimeResponse
+import com.example.sleeper_frontend.dto.sleep.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -40,4 +38,10 @@ interface INetworkService {
     fun getGoalTime(
         @Body getGoalTimeRequest: GetGoalTimeRequest
     ): Call<GetGoalTimeResponse>
+
+    @GET("check")
+    fun checkDiaryExistence(
+        @Query("userPk") userPk : Long
+    ): Call<CheckDiaryResponse>
+
 }

@@ -19,6 +19,10 @@ import com.example.sleeper_frontend.dto.diary.SaveDiaryRequest
 import com.example.sleeper_frontend.dto.diary.SaveDiaryResponse
 import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,6 +40,10 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
 
+        if(arguments != null) {
+            binding.diary.setText(arguments?.getString("content").toString())
+        }
+
         binding.btnSaveDiary.isEnabled = false
 
         binding.btnShowMore.setOnClickListener {
@@ -49,11 +57,11 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
         binding.btnSaveDiary.setOnClickListener {
             saveDiary()
 
-            /*activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
+            activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
 
             val homeBFragment = HomeBFragment()
             val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.fl_container, homeBFragment).commit()*/
+            transaction.replace(R.id.fl_container, homeBFragment).commit()
         }
 
         return binding.root
@@ -71,9 +79,9 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     }
 
     private fun saveDiary() {
-        getNetworkService()
+//        getNetworkService()
 
-        var content : String = binding.diary.text.toString()
+        /*var content : String = binding.diary.text.toString()
         var userPk : Long = 1 //수정
 
         val saveDiaryResponseCall = getNetworkService().getDiaryPk(SaveDiaryRequest(content = content, userPk = userPk))
@@ -104,7 +112,7 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
             }
 
             override fun onFailure(call: Call<SaveDiaryResponse>, t: Throwable) {}
-        })
+        })*/
     }
 
     private fun enableBtn(v : EditText) {
@@ -113,9 +121,22 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     }
 
     private fun getNetworkService(): INetworkService {
+        val interceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
+        val gson : Gson = GsonBuilder()
+            .setLenient()
+            .create()
+
         val retrofit = Retrofit.Builder()
-            .baseUrl("localhost:8080")
-            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://192.168.21.2:8082/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(client)
             .build()
 
         return retrofit.create(INetworkService::class.java)
