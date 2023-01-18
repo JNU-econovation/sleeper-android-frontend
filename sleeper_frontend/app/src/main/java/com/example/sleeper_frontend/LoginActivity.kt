@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -35,10 +36,11 @@ class LoginActivity : AppCompatActivity() {
 
         binding.activityLoginLayout.setBackgroundResource(R.drawable.login_background)
 
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val loginPref = getPreferences(Context.MODE_PRIVATE)
 
-        if(sharedPref != null) {
-            init(sharedPref)
+
+        if(loginPref != null) {
+            init(loginPref)
         }
 
         binding.btnLogin.setOnClickListener {
@@ -76,23 +78,31 @@ class LoginActivity : AppCompatActivity() {
 
         loginResponseCall.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call : Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
+                if (response.isSuccessful && response.body() != null) {
                     val result : LoginResponse? = response.body()
                     val accessToken : String = result!!.accessToken
                     val refreshToken : String = result.refreshToken
+                    /*val userPk : String = result.userPk*/
 
-                    val sharedPref = getPreferences(Context.MODE_PRIVATE)
-                    sharedPref.edit().run {
-                        putString("userId", userId)
-                        putString("userPassword", userPassword)
-                        commit()
+                    if (response.code() == 200) {
+                        val loginPref = getPreferences(Context.MODE_PRIVATE)
+                        loginPref.edit().run {
+                            putString("userId", userId)
+                            putString("userPassword", userPassword)
+                            commit()
+                        }
+
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+
+                       /* val sharedPref = getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                        sharedPref.edit().run {
+                            putLong("userPk", userPk)
+                        }*/
                     }
-
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-
                 } else {
 
+                    Log.d("hyeon", "비정상 통신")
 
                 }
             }
