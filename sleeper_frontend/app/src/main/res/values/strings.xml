@@ -30,6 +30,7 @@
     <string name="register_scr_edittext_age_hint">나이 선택</string>
     <string name="register_scr_finish">완료</string>
 
+    <string name="survey_scr_network">%1$d:%2$s</string>
     <string name="survey_scr_textview_goal_start">목표 수면 시작 시간</string>
     <string name="survey_scr_textview_goal_end">목표 기상 시간</string>
     <string name="survey_scr_btn_choose">시간 선택</string>

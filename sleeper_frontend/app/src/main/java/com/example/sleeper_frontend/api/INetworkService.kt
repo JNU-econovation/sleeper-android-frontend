@@ -11,17 +11,17 @@ import retrofit2.http.*
 
 interface INetworkService {
 
-    @POST("localhost:8080/users")
+    @POST("users")
     fun getRegisterResponse(
         @Body registerRequest : RegisterRequest
     ): Call<RegisterResponse>
 
-    @POST("localhost:8080/login")
+    @POST("login")
     fun getLoginResponse(
         @Body loginRequest : LoginRequest
     ): Call<LoginResponse>
 
-    @POST("/diaries")
+    @POST("diaries")
     fun getDiaryPk(
         @Body saveDiaryRequest: SaveDiaryRequest
     ): Call<SaveDiaryResponse>

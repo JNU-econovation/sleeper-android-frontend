@@ -10,9 +10,11 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 class EventDecorator(context: Context, date: CalendarDay): DayViewDecorator {
     private var date = date
     val drawable: Drawable = ContextCompat.getDrawable(context, R.drawable.calendar_selector)!!
+
     override fun shouldDecorate(day: CalendarDay?): Boolean{
         return day?.equals(date)!!
     }
+
     override fun decorate(view: DayViewFacade?) {
 //view?.addSpan(ForegroundColorSpan(Color.parseColor("#34A94B")))   //텍스트 색상이 색상코드와 다르게 보이는 문제
         if(drawable != null) {

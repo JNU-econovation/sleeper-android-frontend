@@ -3,15 +3,30 @@ package com.example.sleeper_frontend
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.ActivitySurveyBinding
+import com.example.sleeper_frontend.dto.register.RegisterRequest
+import com.example.sleeper_frontend.dto.register.RegisterResponse
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SurveyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySurveyBinding
+    private lateinit var goalSleepTime : String
+    private lateinit var goalWakeTime : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -38,10 +53,8 @@ class SurveyActivity : AppCompatActivity() {
         }
 
         binding.btnSurveyFinished.setOnClickListener {
-            val intent = Intent(this@SurveyActivity, LoginActivity::class.java)
-            startActivity(intent)
 
-            finish()
+            tryNetwork()
         }
 
     }
@@ -59,10 +72,21 @@ class SurveyActivity : AppCompatActivity() {
     }
 
     private fun setTimeText(btn : View, hourOfDay : Int, minute : Int) {
+
         var min : String = minute.toString()
 
         if ( min.length < 2 ) {
             min = "0${min}"
+        }
+
+        if (btn == binding.btnSurveyChooseStartTime) {
+            goalSleepTime = getString(R.string.survey_scr_textview, hourOfDay, min)
+
+            Log.d("hyeon", "goalSleepTime 초기화 완료")
+        } else if (btn == binding.btnSurveyChooseEndTime) {
+            goalWakeTime = getString(R.string.survey_scr_textview, hourOfDay, min)
+
+            Log.d("hyeon", "goalWakeTime 초기화 완료")
         }
 
         val meridiem : String = if (hourOfDay > 12) {
@@ -90,5 +114,86 @@ class SurveyActivity : AppCompatActivity() {
 
     private fun enableBtn() {
         binding.btnSurveyFinished.isEnabled = true
+    }
+
+    private fun getNetworkService(): INetworkService {
+        val interceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
+        val gson : Gson = GsonBuilder()
+            .setLenient()
+            .create()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://192.168.21.2:8082/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(client)
+            .build()
+
+        return retrofit.create(INetworkService::class.java)
+    }
+
+    private fun tryNetwork() {
+        Log.d("hyeon", "tryNetwork작동")
+        val userId = intent.getStringExtra("userId").toString()
+
+        val userPassword = intent.getStringExtra("userPassword").toString()
+        val userNickName = intent.getStringExtra("userNickName").toString()
+        val userAge = intent.getLongExtra("userAge", 1)
+        Log.d("hyeon","변수 초기화")
+
+        val initRequest = RegisterRequest(
+            /*userId = userId + "",
+            userPassword = userPassword + "",
+            userNickName = userNickName + "",
+            userAge = userAge,
+            goalSleepTime = goalSleepTime + "",
+            goalWakeTime = goalWakeTime + ""*/
+            userId = "hyeon",
+            userPassword = "123",
+            userNickName = "난현지",
+            userAge = 23/*,
+            goalSleepTime = "03:00",
+            goalWakeTime = "10:00"*/)
+
+        val registerResponseCall : Call<RegisterResponse> = getNetworkService().getRegisterResponse(
+            initRequest
+        )
+
+        Log.d("hyeon","call객체 초기화")
+        registerResponseCall.enqueue(object : Callback<RegisterResponse> {
+            override fun onResponse(call : Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                Log.d("hyeon", "통신 성공")
+                if (response.isSuccessful && response.body() != null) {
+
+                    val result: RegisterResponse? = response.body()
+                    val resultCode: String = response.code().toString()
+
+                    Log.d("hyeon", resultCode)
+                    val success: String = "200";
+                    val badRequest: String = "300"
+                    val internalServerError: String = "500"
+
+
+                    if (resultCode == success) {
+                        val intent = Intent(this@SurveyActivity, LoginActivity::class.java)
+                        startActivity(intent)
+
+                        finish()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                Log.d("hyeon", "통신 실패")
+                val string = t.message.toString()
+                Log.d("hyeon", string)
+                Log.d("hyeon", registerResponseCall.toString())
+            }
+        })
     }
 }

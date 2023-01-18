@@ -203,46 +203,20 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun getNetworkService(): INetworkService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("localhost:8080")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        return retrofit.create(INetworkService::class.java)
-    }
-
     private fun addBtnOkayListener() {
-        /*val userId : String = binding.editId.text.toString()
+        val userId : String = binding.editId.text.toString()
         val userPassword : String = binding.editPassword.text.toString()
         val userNickName : String = binding.editNickname.text.toString()
         val temp : String = binding.editAge.text.toString()
-        val userAge : Long = parseLong(temp)*/
+        val userAge : Long = parseLong(temp)
 
         val intent = Intent(this@RegisterActivity, SurveyActivity::class.java)
+        intent.putExtra("userId", userId)
+        intent.putExtra("userPassword", userPassword)
+        intent.putExtra("userNickName", userNickName)
+        intent.putExtra("userAge", userAge)
         startActivity(intent)
 
-/*        val registerResponseCall = getNetworkService().getRegisterResponse(
-            RegisterRequest(userId = userId, userPassword = userPassword,userNickName = userNickName, userAge = userAge)
-        )
-
-        registerResponseCall.enqueue(object : Callback<RegisterResponse> {
-            override fun onResponse(call : Call<RegisterResponse>, response: Response<RegisterResponse>) {
-                if (response.isSuccessful) {
-
-                    val result : RegisterResponse? = response.body()
-                    val userId = result!!.userId
-
-                    val intent = Intent(this@RegisterActivity, SurveyActivity::class.java)
-                    startActivity(intent)
-
-                } else {
-
-
-                }
-            }
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {}
-        })*/
     }
 
 }
