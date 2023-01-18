@@ -69,6 +69,7 @@
     <string name="calendar_inside_frg_delete">삭제</string>
 
     <string name="alarm_frg_title">Alarm</string>
+    <string name="alarm_frg_textview_time">%1$s:%2$s</string>
     <string name="alarm_frg_textview_sleep_time">오늘의 취침 시간</string>
     <string name="alarm_frg_textview_wake_time">오늘의 기상 시간</string>
     <string name="alarm_frg_textview_update">수정</string>

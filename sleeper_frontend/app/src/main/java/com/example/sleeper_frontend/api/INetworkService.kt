@@ -6,6 +6,8 @@ import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.example.sleeper_frontend.dto.register.RegisterRequest
 import com.example.sleeper_frontend.dto.register.RegisterResponse
+import com.example.sleeper_frontend.dto.sleep.GetGoalTimeRequest
+import com.example.sleeper_frontend.dto.sleep.GetGoalTimeResponse
 import com.example.sleeper_frontend.dto.sleep.SetWakeTimeRequest
 import com.example.sleeper_frontend.dto.sleep.SetWakeTimeResponse
 import retrofit2.Call
@@ -33,4 +35,9 @@ interface INetworkService {
         @Path("userPk") userPk : Long,
         @Body setWakeTimeRequset : SetWakeTimeRequest
     ): Call<SetWakeTimeResponse>
+
+    @GET("users/time")
+    fun getGoalTime(
+        @Body getGoalTimeRequest: GetGoalTimeRequest
+    ): Call<GetGoalTimeResponse>
 }
