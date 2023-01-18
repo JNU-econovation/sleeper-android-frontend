@@ -145,27 +145,25 @@ class SurveyActivity : AppCompatActivity() {
         val userPassword = intent.getStringExtra("userPassword").toString()
         val userNickName = intent.getStringExtra("userNickName").toString()
         val userAge = intent.getLongExtra("userAge", 1)
+        val goalSleepTime = intent.getStringExtra("goalSleepTime").toString()
+        val goalWakeTime = intent.getStringExtra("goalWakeTime").toString()
+
         Log.d("hyeon","변수 초기화")
 
         val initRequest = RegisterRequest(
-            /*userId = userId + "",
+            userId = userId + "",
             userPassword = userPassword + "",
             userNickName = userNickName + "",
             userAge = userAge,
             goalSleepTime = goalSleepTime + "",
-            goalWakeTime = goalWakeTime + ""*/
-            userId = "hyeon",
-            userPassword = "123",
-            userNickName = "난현지",
-            userAge = 23/*,
-            goalSleepTime = "03:00",
-            goalWakeTime = "10:00"*/)
+            goalWakeTime = goalWakeTime + "" )
 
         val registerResponseCall : Call<RegisterResponse> = getNetworkService().getRegisterResponse(
             initRequest
         )
 
         Log.d("hyeon","call객체 초기화")
+
         registerResponseCall.enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call : Call<RegisterResponse>, response: Response<RegisterResponse>) {
                 Log.d("hyeon", "통신 성공")

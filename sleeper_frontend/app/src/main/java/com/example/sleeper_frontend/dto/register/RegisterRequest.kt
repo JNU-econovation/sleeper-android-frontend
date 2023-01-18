@@ -4,7 +4,7 @@ data class RegisterRequest(
     var userId: String,
     var userPassword: String,
     var userNickName: String,
-    var userAge: Long/*,
+    var userAge: Long,
     var goalSleepTime: String,
-    var goalWakeTime: String*/
+    var goalWakeTime: String
 )
