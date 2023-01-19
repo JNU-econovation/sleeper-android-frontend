@@ -1,6 +1,10 @@
 package com.example.sleeper_frontend
 
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.sleeper_frontend.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,7 +39,27 @@ class MainActivity : AppCompatActivity() {
         binding.activityMainLayout.setBackgroundResource(R.drawable.main_background)
 
         initNavigationBar()
+        setNotice()
 
+    }
+
+    private fun setNotice() {
+        val alarmManager : AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val receiverIntent = Intent(this, SettingTimeUpdateReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, receiverIntent, 0)
+
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 5)
+        }
+
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
     }
 
     private fun initNavigationBar() {

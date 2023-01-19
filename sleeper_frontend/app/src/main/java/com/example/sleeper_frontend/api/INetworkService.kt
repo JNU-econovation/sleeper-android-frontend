@@ -22,6 +22,11 @@ interface INetworkService {
         @Body loginRequest : LoginRequest
     ): Call<LoginResponse>
 
+    @POST("sleeps")
+    fun resetSettingTime(
+        @Query("userPk") userPk : Long
+    ):Call<ResetSettingTimeResponse>
+
     @GET("check")
     fun checkDiaryExistence(
         @Query("userPk") userPk : Long
