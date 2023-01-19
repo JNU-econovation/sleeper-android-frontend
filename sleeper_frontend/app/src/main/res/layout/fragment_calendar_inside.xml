@@ -40,6 +40,7 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/title_calendar_inside_frg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/calendar_inside_frg_date"
@@ -85,9 +86,10 @@
                         android:src="@drawable/calendar_inside_frg_background_diary" />
 
                     <TextView
+                        android:id="@+id/diary_calendar_inside_frg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/calendar_inside_frg_diary"
+                        android:text=""
                         android:textColor="#000000"
                         android:textSize="12sp"
                         android:fontFamily="@font/font_the130"
@@ -161,6 +163,7 @@
                                 android:textSize="11sp" />
 
                             <TextView
+                                android:id="@+id/goal_time_calendar_inside_frg"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -195,6 +198,7 @@
                                 android:textSize="11sp" />
 
                             <TextView
+                                android:id="@+id/actual_time_calendar_inside_frg"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
