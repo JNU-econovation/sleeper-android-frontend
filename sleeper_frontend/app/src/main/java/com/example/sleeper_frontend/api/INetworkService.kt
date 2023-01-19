@@ -64,4 +64,10 @@ interface INetworkService {
         @Query("userPk") userPk : Long
     ): Call<ShowDateResponse>
 
+    @DELETE("diaries/{diaryPk}")
+    fun deleteDiary(
+        @Path("diaryPk") diaryPk : Long,
+        @Query("userPk") userPk : Long
+    ): Call<DeleteDiaryResponse>
+
 }

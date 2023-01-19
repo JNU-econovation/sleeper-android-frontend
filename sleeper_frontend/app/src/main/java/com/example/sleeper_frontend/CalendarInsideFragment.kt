@@ -14,6 +14,7 @@ import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentCalendarBinding
 import com.example.sleeper_frontend.databinding.FragmentCalendarInsideBinding
 import com.example.sleeper_frontend.dto.calendar.ShowDateResponse
+import com.example.sleeper_frontend.dto.diary.DeleteDiaryResponse
 import com.example.sleeper_frontend.dto.diary.UpdateDiaryRequest
 import com.example.sleeper_frontend.dto.diary.UpdateDiaryResponse
 import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeRequest
@@ -46,12 +47,17 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
         initDate()
         initCalendar()
 
-        updateDiary(diaryPk)
+        binding.btnUpdateDiary.setOnClickListener {
+            updateDiary(diaryPk)
+        }
 
-        //2. 다이어리 수정
-        //3. 다이어리 삭제
+        binding.btnDeleteDiary.setOnClickListener {
+            deleteDiary(diaryPk)
+        }
+
         return binding.root
     }
+
 
     private fun getNetworkService(): INetworkService {
         val interceptor = HttpLoggingInterceptor().apply {
@@ -201,6 +207,51 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
                 val string = t.message.toString()
                 Log.d("hyeon", string)
                 Log.d("hyeon", updateDiaryResponseCall.toString())
+            }
+        })
+    }
+
+    private fun deleteDiary(diaryPk : Long) {
+        Log.d("hyeon", "tryNetwork작동")
+
+        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+
+        Log.d("hyeon","변수 초기화")
+
+        val deleteDiaryResponseCall : Call<DeleteDiaryResponse> = getNetworkService().deleteDiary(
+            diaryPk = diaryPk, userPk = userPk
+        )
+
+        Log.d("hyeon","call객체 초기화")
+        deleteDiaryResponseCall.enqueue(object : Callback<DeleteDiaryResponse> {
+            override fun onResponse(call : Call<DeleteDiaryResponse>, response: Response<DeleteDiaryResponse>) {
+                Log.d("hyeon", "통신 성공")
+                if (response.isSuccessful && response.body() != null) {
+
+                    val result: DeleteDiaryResponse = response.body()!!
+                    val resultCode: String = response.code().toString()
+
+                    Log.d("hyeon", resultCode)
+                    val success: String = "200";
+                    val badRequest: String = "300"
+                    val internalServerError: String = "500"
+
+
+                    if (resultCode == success) {
+
+                        binding.diaryCalendarInsideFrg.text = ""
+                        Toast
+                            .makeText(activity, "감사일기가 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<DeleteDiaryResponse>, t: Throwable) {
+                Log.d("hyeon", "통신 실패")
+                val string = t.message.toString()
+                Log.d("hyeon", string)
+                Log.d("hyeon", deleteDiaryResponseCall.toString())
             }
         })
     }

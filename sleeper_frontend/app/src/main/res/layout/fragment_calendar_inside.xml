@@ -108,6 +108,7 @@
                         android:layout_marginBottom="17dp" >
 
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_update_diary"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:background="@color/transparent"
@@ -117,6 +118,7 @@
                             android:fontFamily="@font/font_the140" />
 
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_delete_diary"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:background="@color/transparent"
