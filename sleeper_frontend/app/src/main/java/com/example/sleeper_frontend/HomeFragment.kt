@@ -87,7 +87,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun checkDiary() {
         Log.d("hyeon", "tryNetwork작동")
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk : Long = sharedPref?.getLong("userPk", 1L)
+        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
 
         Log.d("hyeon","변수 초기화")
 
@@ -106,8 +106,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     val result: CheckDiaryResponse? = response.body()
                     val resultCode: String = response.code().toString()
 
-                    val existence : Boolean = result!!.existence
+                    val diaryPk : Long = result!!.diaryPk
                     val content : String = result.content
+                    val existence : Boolean = result.existence
 
                     Log.d("hyeon", resultCode)
                     val success: String = "200";
@@ -117,7 +118,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                     if (resultCode == success) {
                         val bundle = Bundle()
-                        if(existence != null) {
+
+                        if(existence) {
+                            bundle.putLong("diaryPk", diaryPk)
                             bundle.putString("content", content)
                         }
 
