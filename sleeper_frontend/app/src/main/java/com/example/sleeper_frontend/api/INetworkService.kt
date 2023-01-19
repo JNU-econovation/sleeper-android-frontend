@@ -1,5 +1,6 @@
 package com.example.sleeper_frontend.api
 
+import com.example.sleeper_frontend.dto.calendar.ShowDateResponse
 import com.example.sleeper_frontend.dto.diary.*
 import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
@@ -57,6 +58,10 @@ interface INetworkService {
         @Body setAlarmTimeRequest : SetAlarmTimeRequest
     ): Call<SetAlarmTimeResponse>
 
-
+    @GET("calendar/{date}")
+    fun getCalendarInside(
+        @Path("date") date : String,
+        @Query("userPk") userPk : Long
+    ): Call<ShowDateResponse>
 
 }

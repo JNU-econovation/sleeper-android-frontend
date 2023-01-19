@@ -1,5 +1,5 @@
 package com.example.sleeper_frontend.dto.calendar
 
 data class ShowCalendarRequest(
-    var userId : String
+    var userPk : Long
 )
