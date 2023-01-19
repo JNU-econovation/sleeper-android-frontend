@@ -30,6 +30,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Integer.parseInt
 import java.time.LocalTime
+import java.time.ZonedDateTime
 
 class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
@@ -291,11 +292,13 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
 
         val localTime : String = LocalTime.now().toString()
+        val zonedDateTimeOffset : String = ZonedDateTime.now().offset.toString()
+
 
         val sleepTime : String = binding.textviewAlarmInsideSleepTime.text.toString()
-        val zonedDateTimeSleep : String = localTime+"T"+sleepTime+":00"
+        val zonedDateTimeSleep : String = localTime+"T"+sleepTime+":00"+ zonedDateTimeOffset
         val wakeTime : String = binding.textviewAlarmInsideWakeTime.text.toString()
-        var zonedDateTimeWake : String = localTime+"T"+wakeTime+":00"
+        var zonedDateTimeWake : String = localTime+"T"+wakeTime+":00"+ zonedDateTimeOffset
 
 
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
