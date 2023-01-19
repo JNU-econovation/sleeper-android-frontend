@@ -35,7 +35,7 @@
             <ImageView
                 android:layout_width="167dp"
                 android:layout_height="87dp"
-                android:src="@drawable/character"/>
+                android:src="@drawable/character_sample_sleep"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_stop_sleep"
