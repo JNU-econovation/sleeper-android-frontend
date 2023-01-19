@@ -227,6 +227,7 @@
                         android:background="@drawable/btn_recommend" />
 
                     <TextView
+                        android:id="@+id/rec1_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="오전"
@@ -239,6 +240,7 @@
                         android:layout_marginBottom="10dp"/>
 
                     <TextView
+                        android:id="@+id/rec1_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="08:00"
@@ -268,6 +270,7 @@
                         android:background="@drawable/btn_recommend" />
 
                     <TextView
+                        android:id="@+id/rec2_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="오전"
@@ -280,6 +283,7 @@
                         android:layout_marginBottom="10dp" />
 
                     <TextView
+                        android:id="@+id/rec2_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="08:00"
@@ -311,6 +315,7 @@
                         android:background="@drawable/btn_recommend" />
 
                     <TextView
+                        android:id="@+id/rec3_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="오전"
@@ -323,6 +328,7 @@
                         android:layout_marginBottom="10dp" />
 
                     <TextView
+                        android:id="@+id/rec3_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="08:00"
@@ -352,6 +358,7 @@
                         android:background="@drawable/btn_recommend" />
 
                     <TextView
+                        android:id="@+id/rec4_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="오전"
@@ -364,6 +371,7 @@
                         android:layout_marginBottom="10dp" />
 
                     <TextView
+                        android:id="@+id/rec4_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="08:00"
