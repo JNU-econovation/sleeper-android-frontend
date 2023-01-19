@@ -1,5 +1,6 @@
 package com.example.sleeper_frontend.api
 
+import com.example.sleeper_frontend.dto.CharacterInfoResponse
 import com.example.sleeper_frontend.dto.calendar.ShowDateResponse
 import com.example.sleeper_frontend.dto.diary.*
 import com.example.sleeper_frontend.dto.login.LoginRequest
@@ -31,6 +32,12 @@ interface INetworkService {
     fun checkDiaryExistence(
         @Query("userPk") userPk : Long
     ): Call<CheckDiaryResponse>
+
+    @GET("character/{userpk}")
+    fun getCharacterInfo(
+        @Path("userpk") userpk : Long,
+        @Query("userPk") userPk : Long
+    ): Call<CharacterInfoResponse>
 
     @POST("diaries")
     fun getDiaryPk(

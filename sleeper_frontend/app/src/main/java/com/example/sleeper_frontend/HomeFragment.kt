@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentHomeBinding
+import com.example.sleeper_frontend.dto.CharacterInfoResponse
 import com.example.sleeper_frontend.dto.diary.CheckDiaryResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -33,6 +34,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        getCharacter()
+
         binding.btnShowMore.setOnClickListener {
             clickBtnPopup()
         }
@@ -44,6 +47,50 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return binding.root
     }
 
+    private fun getCharacter() {
+        Log.d("hyeon", "tryNetwork작동")
+        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+
+        Log.d("hyeon","변수 초기화")
+
+
+        val characterInfoResponseCall : Call<CharacterInfoResponse> = getNetworkService().getCharacterInfo(
+            userpk = userPk, userPk = userPk
+        )
+
+        Log.d("hyeon","call객체 초기화")
+
+        characterInfoResponseCall.enqueue(object : Callback<CharacterInfoResponse> {
+            override fun onResponse(call : Call<CharacterInfoResponse>, response: Response<CharacterInfoResponse>) {
+                Log.d("hyeon", "통신 성공")
+                if (response.isSuccessful && response.body() != null) {
+
+                    val result: CharacterInfoResponse? = response.body()
+                    val resultCode: String = response.code().toString()
+
+                    val speechBubble : String = result!!.speechBubble
+
+                    Log.d("hyeon", resultCode)
+                    val success: String = "200";
+                    val badRequest: String = "300"
+                    val internalServerError: String = "500"
+
+
+                    if (resultCode == success) {
+                        Log.d("hyeon", "정상 통신")
+                    }
+                }
+            }
+            override fun onFailure(call: Call<CharacterInfoResponse>, t: Throwable) {
+                Log.d("hyeon", "통신 실패")
+                val string = t.message.toString()
+                Log.d("hyeon", string)
+                Log.d("hyeon", characterInfoResponseCall.toString())
+            }
+        })
+    }
+
     private fun clickBtnPopup() {
         val popup : PopupDialogFragment = PopupDialogFragment().getInstance()
 
@@ -53,13 +100,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                "tag"
            )
        }
-    }
-
-    private fun changeFragment() {
-        val diaryFragment = DiaryFragment()
-        val transaction : FragmentTransaction? = activity?.supportFragmentManager?.beginTransaction()
-
-        transaction?.replace(R.id.fl_container, diaryFragment)?.addToBackStack("HomeFragment")?.commit()
     }
 
     private fun getNetworkService(): INetworkService {
