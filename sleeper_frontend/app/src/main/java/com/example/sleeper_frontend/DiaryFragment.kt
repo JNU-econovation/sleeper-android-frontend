@@ -17,6 +17,8 @@ import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentDiaryBinding
 import com.example.sleeper_frontend.dto.diary.SaveDiaryRequest
 import com.example.sleeper_frontend.dto.diary.SaveDiaryResponse
+import com.example.sleeper_frontend.dto.diary.UpdateDiaryRequest
+import com.example.sleeper_frontend.dto.diary.UpdateDiaryResponse
 import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.google.gson.Gson
@@ -41,7 +43,30 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
 
         if(arguments != null) {
-            binding.diary.setText(arguments?.getString("content").toString())
+            binding.diary.setText(requireArguments().getString("content").toString())
+            val diaryPk : Long = requireArguments().getLong("diaryPk", 1)
+
+            binding.btnSaveDiary.setOnClickListener {
+
+                updateDiary(diaryPk)
+
+                activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
+
+                val homeBFragment = HomeBFragment()
+                val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+                transaction.replace(R.id.fl_container, homeBFragment).commit()
+            }
+        } else {
+            binding.btnSaveDiary.setOnClickListener {
+
+                saveDiary()
+
+                activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
+
+                val homeBFragment = HomeBFragment()
+                val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+                transaction.replace(R.id.fl_container, homeBFragment).commit()
+            }
         }
 
         binding.btnSaveDiary.isEnabled = false
@@ -54,15 +79,6 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
             enableBtn(binding.diary)
         }
 
-        binding.btnSaveDiary.setOnClickListener {
-            saveDiary()
-
-            activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
-
-            val homeBFragment = HomeBFragment()
-            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.fl_container, homeBFragment).commit()
-        }
 
         return binding.root
     }
@@ -140,6 +156,43 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
             .build()
 
         return retrofit.create(INetworkService::class.java)
+    }
+
+    private fun updateDiary(diaryPk:Long) {
+        getNetworkService()
+
+        var content : String = binding.diary.text.toString()
+        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+
+        val updateDiaryResponseCall = getNetworkService().updateDiary(diaryPk, UpdateDiaryRequest(content, userPk))
+
+        updateDiaryResponseCall.enqueue(object : Callback<UpdateDiaryResponse> {
+            override fun onResponse(
+                call: Call<UpdateDiaryResponse>,
+                response: Response<UpdateDiaryResponse>) {
+
+                if (response.isSuccessful && response.body() != null) {
+                    val result: UpdateDiaryResponse? = response.body()
+                    //받은 코드 저장
+                    val resultCode: String = response.code().toString()
+
+                    val success: String = "200"; //로그인 성공
+                    val badRequest: String = "300"
+                    val internalServerError: String = "500"
+
+                    if (resultCode == success) {
+                        activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
+
+                        val homeBFragment = HomeBFragment()
+                        val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+                        transaction.replace(R.id.fl_container, homeBFragment).commit()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<UpdateDiaryResponse>, t: Throwable) {}
+        })
     }
 
 }
