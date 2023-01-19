@@ -29,6 +29,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Integer.parseInt
+import java.time.LocalTime
 
 class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
@@ -287,8 +288,15 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
     private fun saveAlarmTime() {
         Log.d("hyeon", "tryNetwork작동")
+
+
+        val localTime : String = LocalTime.now().toString()
+
         val sleepTime : String = binding.textviewAlarmInsideSleepTime.text.toString()
+        val zonedDateTimeSleep : String = localTime+"T"+sleepTime+":00"
         val wakeTime : String = binding.textviewAlarmInsideWakeTime.text.toString()
+        var zonedDateTimeWake : String = localTime+"T"+wakeTime+":00"
+
 
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userPk : Long = sharedPref!!.getLong("userPk", 1L)
@@ -296,7 +304,7 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
         Log.d("hyeon","변수 초기화")
 
         val setAlarmTimeResponseCall : Call<SetAlarmTimeResponse> = getNetworkService().setAlarmTime(
-            userPk = userPk, SetAlarmTimeRequest(sleepTime = sleepTime, wakeTime = wakeTime, userPk = userPk)
+            userPk = userPk, SetAlarmTimeRequest(sleepTime = zonedDateTimeSleep, wakeTime = zonedDateTimeWake, userPk = userPk)
         )
 
         Log.d("hyeon","call객체 초기화")
