@@ -44,9 +44,9 @@ interface INetworkService {
         @Body saveDiaryRequest: SaveDiaryRequest
     ): Call<SaveDiaryResponse>
 
-    @PUT("sleeps/{userPk}/actualTime")
+    @PUT("sleeps/{sleepPk}/actualTime")
     fun putActualWakeTime(
-        @Path("userPk") userPk : Long,
+        @Path("sleepPk") sleepPk : Long,
         @Body setWakeTimeRequest : SetWakeTimeRequest
     ): Call<SetWakeTimeResponse>
 
@@ -57,14 +57,16 @@ interface INetworkService {
     ): Call<UpdateDiaryResponse>
 
     @GET("sleeps/{userPk}/setTime")
-    fun getSettingTime(): Call<GetSettingTimeResponse>
+    fun getSettingTime(
+        @Path("userPk") userPk : Long
+    ): Call<GetSettingTimeResponse>
 
     @GET("sleeps/recommend")
     fun getRecommendTime(
         @Query("setSleepTime") setSleepTime : String
     ): Call<GetRecommendationResponse>
 
-    @PUT("sleep/{userPk}/setTime")
+    @PUT("sleeps/{userPk}/setTime")
     fun setAlarmTime(
         @Path("userPk") userPk : Long,
         @Body setAlarmTimeRequest : SetAlarmTimeRequest
@@ -82,7 +84,7 @@ interface INetworkService {
         @Query("userPk") userPk : Long
     ): Call<DeleteDiaryResponse>
 
-    @PUT("diares/{diaryPk}/continue")
+    @PUT("diaries/{diaryPk}/continue")
     fun continueDiary(
         @Path("diaryPk") diaryPk : Long,
     ): Call<ContinueDiaryResponse>

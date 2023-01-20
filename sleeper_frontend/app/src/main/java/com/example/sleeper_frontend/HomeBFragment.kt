@@ -56,11 +56,7 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
         getCharacter()
 
         binding.btnStopSleep.setOnClickListener {
-           /* tryNetwork()
-
-            val homeFragment = HomeFragment()
-            val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
-            transaction.replace(R.id.fl_container, homeFragment).commit()*/
+            tryNetwork()
         }
 
         return binding.root
@@ -148,11 +144,12 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
         val actualWakeTime = temp.toString()
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+        val sleepPk : Long = sharedPref.getLong("sleepPk", 1L)
 
         Log.d("hyeon","변수 초기화")
 
         val setWakeTimeResponseCall : Call<SetWakeTimeResponse> = getNetworkService().putActualWakeTime(
-            userPk = userPk, SetWakeTimeRequest(actualWakeTime = actualWakeTime, userPk = userPk)
+           sleepPk = sleepPk, SetWakeTimeRequest(actualWakeTime = actualWakeTime, userPk = userPk)
         )
 
         Log.d("hyeon","call객체 초기화")
@@ -161,8 +158,10 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
                 Log.d("hyeon", "통신 성공")
                 if (response.isSuccessful && response.body() != null) {
 
-                    val result: SetWakeTimeResponse? = response.body()
+                    val result: SetWakeTimeResponse = response.body()!!
                     val resultCode: String = response.code().toString()
+
+                    val sleepPk : Long = result.sleepPk
 
                     Log.d("hyeon", resultCode)
                     val success: String = "200";
@@ -171,6 +170,10 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
 
                     if (resultCode == success) {
+                        sharedPref.edit().run{
+                            putLong("sleepPk", sleepPk)
+                            commit()
+                        }
 
                         val homeFragment = HomeFragment()
                         val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()

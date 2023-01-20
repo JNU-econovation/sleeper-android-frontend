@@ -99,6 +99,7 @@ class LoginActivity : AppCompatActivity() {
                     val accessToken : String = result!!.accessToken
                     val refreshToken : String = result.refreshToken
                     val userPk : Long = result.userPk
+                    val sleepPk : Long = result.sleepPk
 
                     if (response.code() == 200) {
                         val loginPref = getPreferences(Context.MODE_PRIVATE)
@@ -113,6 +114,7 @@ class LoginActivity : AppCompatActivity() {
                             putLong("userPk", userPk)
                             putString("accessToken", accessToken)
                             putString("refreshToken", refreshToken)
+                            putLong("sleepPk", sleepPk)
                             commit()
                         }
 

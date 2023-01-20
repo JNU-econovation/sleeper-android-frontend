@@ -4,5 +4,6 @@ data class LoginResponse(
     var message : String,
     var accessToken : String,
     var refreshToken : String,
-    var userPk : Long
+    var userPk : Long,
+    var sleepPk : Long
 )
