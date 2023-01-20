@@ -15,10 +15,7 @@ import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentDiaryBinding
-import com.example.sleeper_frontend.dto.diary.SaveDiaryRequest
-import com.example.sleeper_frontend.dto.diary.SaveDiaryResponse
-import com.example.sleeper_frontend.dto.diary.UpdateDiaryRequest
-import com.example.sleeper_frontend.dto.diary.UpdateDiaryResponse
+import com.example.sleeper_frontend.dto.diary.*
 import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.google.gson.Gson
@@ -42,13 +39,14 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
 
+        //HomeB에서 뒤로가기 버튼 눌렀을 때, arguments 유무 확인하기.
         if(arguments != null) {
             binding.diary.setText(requireArguments().getString("content").toString())
             val diaryPk : Long = requireArguments().getLong("diaryPk", 1)
 
             binding.btnSaveDiary.setOnClickListener {
 
-                updateDiary(diaryPk)
+                continueDiary(diaryPk)
 
                 activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
 
@@ -95,10 +93,11 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     }
 
     private fun saveDiary() {
-//        getNetworkService()
+        getNetworkService()
 
-        /*var content : String = binding.diary.text.toString()
-        var userPk : Long = 1 //수정
+        val content : String = binding.diary.text.toString()
+        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
 
         val saveDiaryResponseCall = getNetworkService().getDiaryPk(SaveDiaryRequest(content = content, userPk = userPk))
 
@@ -128,7 +127,7 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
             }
 
             override fun onFailure(call: Call<SaveDiaryResponse>, t: Throwable) {}
-        })*/
+        })
     }
 
     private fun enableBtn(v : EditText) {
@@ -158,22 +157,18 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
         return retrofit.create(INetworkService::class.java)
     }
 
-    private fun updateDiary(diaryPk:Long) {
+    private fun continueDiary(diaryPk : Long) {
         getNetworkService()
 
-        var content : String = binding.diary.text.toString()
-        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+        val continueDiaryResponseCall = getNetworkService().continueDiary(diaryPk)
 
-        val updateDiaryResponseCall = getNetworkService().updateDiary(diaryPk, UpdateDiaryRequest(content, userPk))
-
-        updateDiaryResponseCall.enqueue(object : Callback<UpdateDiaryResponse> {
+        continueDiaryResponseCall.enqueue(object : Callback<ContinueDiaryResponse> {
             override fun onResponse(
-                call: Call<UpdateDiaryResponse>,
-                response: Response<UpdateDiaryResponse>) {
+                call: Call<ContinueDiaryResponse>,
+                response: Response<ContinueDiaryResponse>) {
 
                 if (response.isSuccessful && response.body() != null) {
-                    val result: UpdateDiaryResponse? = response.body()
+                    val result: ContinueDiaryResponse? = response.body()
                     //받은 코드 저장
                     val resultCode: String = response.code().toString()
 
@@ -191,7 +186,12 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
                 }
             }
 
-            override fun onFailure(call: Call<UpdateDiaryResponse>, t: Throwable) {}
+            override fun onFailure(call: Call<ContinueDiaryResponse>, t: Throwable) {
+                Log.d("hyeon", "통신 실패")
+                val string = t.message.toString()
+                Log.d("hyeon", string)
+                Log.d("hyeon", continueDiaryResponseCall.toString())
+            }
         })
     }
 

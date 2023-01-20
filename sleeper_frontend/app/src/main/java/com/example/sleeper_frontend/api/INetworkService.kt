@@ -82,4 +82,9 @@ interface INetworkService {
         @Query("userPk") userPk : Long
     ): Call<DeleteDiaryResponse>
 
+    @PUT("diares/{diaryPk}/continue")
+    fun continueDiary(
+        @Path("diaryPk") diaryPk : Long,
+    ): Call<ContinueDiaryResponse>
+
 }
