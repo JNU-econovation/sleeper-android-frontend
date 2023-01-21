@@ -7,14 +7,28 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.ActivityMainBinding
+import com.example.sleeper_frontend.dto.sleep.GetSettingTimeResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Integer.parseInt
+import java.time.ZonedDateTime
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -39,27 +53,6 @@ class MainActivity : AppCompatActivity() {
         binding.activityMainLayout.setBackgroundResource(R.drawable.main_background)
 
         initNavigationBar()
-        setNotice()
-
-    }
-
-    private fun setNotice() {
-        val alarmManager : AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val receiverIntent = Intent(this, SettingTimeUpdateReceiver::class.java)
-
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, receiverIntent, 0)
-
-        val calendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 5)
-        }
-
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
     }
 
     private fun initNavigationBar() {

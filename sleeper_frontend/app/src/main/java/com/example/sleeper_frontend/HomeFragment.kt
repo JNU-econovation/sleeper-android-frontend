@@ -1,5 +1,8 @@
 package com.example.sleeper_frontend
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,11 +11,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentHomeBinding
 import com.example.sleeper_frontend.dto.CharacterInfoResponse
 import com.example.sleeper_frontend.dto.diary.CheckDiaryResponse
+import com.example.sleeper_frontend.dto.sleep.GetSettingTimeResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -22,6 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -41,6 +47,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         binding.btnStartSleep.setOnClickListener {
+            setAlarmTime()
             checkDiary()
         }
 
@@ -181,5 +188,83 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         })
 
+    }
+
+    private fun setAlarmTime() {
+        Log.d("hyeon", "tryNetwork작동")
+
+        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+
+        Log.d("hyeon","변수 초기화")
+
+        val getSettingTimeResponseCall : Call<GetSettingTimeResponse> = getNetworkService().getSettingTime(userPk = userPk)
+
+        Log.d("hyeon","call객체 초기화")
+        getSettingTimeResponseCall.enqueue(object : Callback<GetSettingTimeResponse> {
+            override fun onResponse(call : Call<GetSettingTimeResponse>, response: Response<GetSettingTimeResponse>) {
+                Log.d("hyeon", "통신 성공")
+                if (response.isSuccessful && response.body() != null) {
+
+                    val result: GetSettingTimeResponse = response.body()!!
+                    val resultCode: String = response.code().toString()
+
+                    Log.d("hyeon", resultCode)
+                    val success: String = "200";
+                    val badRequest: String = "300"
+                    val internalServerError: String = "500"
+
+
+                    if (resultCode == success) {
+                        val setWakeTime = result.setWakeTime
+
+                        getSettingTime(setWakeTime)
+                    }
+                }
+            }
+            override fun onFailure(call: Call<GetSettingTimeResponse>, t: Throwable) {
+                Log.d("hyeon", "통신 실패")
+                val string = t.message.toString()
+                Log.d("hyeon", string)
+                Log.d("hyeon", getSettingTimeResponseCall.toString())
+            }
+        })
+    }
+
+    private fun getSettingTime(wakeTime : String){
+
+        val hourString = if (wakeTime.substring(0) == "0") {
+            wakeTime.substring(1 until 2)
+        } else {
+            wakeTime.substring(0 until 2)
+        }
+
+        val minString = wakeTime.substring(3 until 5)
+
+        val hourInt = Integer.parseInt(hourString)
+        val minInt = Integer.parseInt(minString)
+        val calendar = Calendar.getInstance()
+
+        calendar.set(Calendar.HOUR_OF_DAY, hourInt)
+        calendar.set(Calendar.MINUTE, minInt)
+
+        setAlarm(calendar)
+    }
+
+    private fun setAlarm(c : Calendar) {
+        val alarmManager : AlarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val receiverIntent = Intent(activity, AlertReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(activity?.applicationContext, 0, receiverIntent, FLAG_IMMUTABLE)
+
+        if(c.before(Calendar.getInstance())){
+            c.add(Calendar.DATE, 1)
+        }
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            c.timeInMillis,
+            pendingIntent
+        )
     }
 }

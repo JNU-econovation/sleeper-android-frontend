@@ -79,7 +79,7 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
         Log.d("hyeon","변수 초기화")
 
-        val getSettingTimeResponseCall : Call<GetSettingTimeResponse> = getNetworkService().getSettingTime()
+        val getSettingTimeResponseCall : Call<GetSettingTimeResponse> = getNetworkService().getSettingTime(userPk = userPk)
 
         Log.d("hyeon","call객체 초기화")
         getSettingTimeResponseCall.enqueue(object : Callback<GetSettingTimeResponse> {

@@ -71,7 +71,16 @@
                     android:layout_width="273dp"
                     android:layout_height="1dp" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="아직 통계가 나오지 않았습니다."
+                    android:textSize="13sp"
+                    android:fontFamily="@font/font_the150"
+                    android:textColor = "@color/black"
+                    android:layout_marginTop="50dp"/>
+
+                <!--<androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -151,7 +160,7 @@
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>-->
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
