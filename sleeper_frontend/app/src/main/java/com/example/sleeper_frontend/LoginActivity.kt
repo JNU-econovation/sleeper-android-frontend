@@ -14,6 +14,7 @@ import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -21,6 +22,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.CookieManager
 
 class LoginActivity : AppCompatActivity() {
 
@@ -96,9 +98,11 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call : Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     val result : LoginResponse? = response.body()
-                    val accessToken : String = result!!.accessToken
-                    val refreshToken : String = result.refreshToken
-                    val userPk : Long = result.userPk
+
+                    val accessToken = response.headers()["authorization"]
+                    val refreshToken = response.headers()["set-cookie"]
+
+                    val userPk : Long = result!!.userPk
                     val sleepPk : Long = result.sleepPk
 
                     if (response.code() == 200) {

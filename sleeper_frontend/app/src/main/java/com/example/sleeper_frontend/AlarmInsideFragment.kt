@@ -21,6 +21,7 @@ import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeRequest
 import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -76,10 +77,12 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+        val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
 
         Log.d("hyeon","변수 초기화")
 
-        val getSettingTimeResponseCall : Call<GetSettingTimeResponse> = getNetworkService().getSettingTime(userPk = userPk)
+        val getSettingTimeResponseCall : Call<GetSettingTimeResponse> = getNetworkService().getSettingTime(
+            accessToken = accessToken, userPk = userPk)
 
         Log.d("hyeon","call객체 초기화")
         getSettingTimeResponseCall.enqueue(object : Callback<GetSettingTimeResponse> {
@@ -155,10 +158,13 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
         Log.d("hyeon", "tryNetwork작동")
 
         val setSleepTime : String = binding.textviewAlarmInsideSleepTime.text.toString()
+        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
 
         Log.d("hyeon","변수 초기화")
 
-        val getRecommendationResponseCall : Call<GetRecommendationResponse> = getNetworkService().getRecommendTime(setSleepTime = setSleepTime)
+        val getRecommendationResponseCall : Call<GetRecommendationResponse> = getNetworkService().getRecommendTime(
+            accessToken = accessToken, setSleepTime = setSleepTime)
 
         Log.d("hyeon","call객체 초기화")
         getRecommendationResponseCall.enqueue(object : Callback<GetRecommendationResponse> {
@@ -263,6 +269,8 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(RequestInterceptor())
+            .addInterceptor(ResponseInterceptor())
             .build()
 
         val gson : Gson = GsonBuilder()
@@ -276,6 +284,50 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
             .build()
 
         return retrofit.create(INetworkService::class.java)
+    }
+
+    inner class RequestInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+            val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
+
+            val builder = chain.request()
+                .newBuilder()
+                .addHeader("Authorization", accessToken)
+                .build()
+
+            return chain.proceed(builder)
+        }
+    }
+
+    inner class ResponseInterceptor : Interceptor {
+
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val request = chain.request()
+            val response = chain.proceed(request)
+
+            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+            val refreshToken : String = sharedPref!!.getString("refreshToken", " ").toString()
+
+            when (response.code) {
+                400 -> {
+                    // todo Control Error
+                }
+                401 -> {
+                    val builder = response.request
+                        .newBuilder()
+                        .removeHeader("Authorization")
+                        .addHeader("Authorization", refreshToken)
+                        .build()
+
+                    return chain.proceed(builder)
+                }
+                402 -> {
+                    // todo Control Error
+                }
+            }
+            return response
+        }
     }
 
     private fun setOnRecommendBtnListener(recBtn : AppCompatButton, recMeridiem : TextView, recTime : TextView) {
@@ -303,11 +355,12 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", " ").toString()
 
         Log.d("hyeon","변수 초기화")
 
         val setAlarmTimeResponseCall : Call<SetAlarmTimeResponse> = getNetworkService().setAlarmTime(
-            userPk = userPk, SetAlarmTimeRequest(sleepTime = zonedDateTimeSleep, wakeTime = zonedDateTimeWake, userPk = userPk)
+            accessToken =accessToken, userPk = userPk, SetAlarmTimeRequest(sleepTime = zonedDateTimeSleep, wakeTime = zonedDateTimeWake, userPk = userPk)
         )
 
         Log.d("hyeon","call객체 초기화")

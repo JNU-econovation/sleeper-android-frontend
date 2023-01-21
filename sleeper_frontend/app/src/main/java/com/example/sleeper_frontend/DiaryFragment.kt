@@ -20,6 +20,7 @@ import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -98,8 +99,10 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
         val content : String = binding.diary.text.toString()
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", " ").toString()
 
-        val saveDiaryResponseCall = getNetworkService().getDiaryPk(SaveDiaryRequest(content = content, userPk = userPk))
+        val saveDiaryResponseCall = getNetworkService().getDiaryPk(
+            accessToken = accessToken, SaveDiaryRequest(content = content, userPk = userPk))
 
         saveDiaryResponseCall.enqueue(object : Callback<SaveDiaryResponse> {
             override fun onResponse(
@@ -142,6 +145,8 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(RequestInterceptor())
+            .addInterceptor(ResponseInterceptor())
             .build()
 
         val gson : Gson = GsonBuilder()
@@ -157,10 +162,56 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
         return retrofit.create(INetworkService::class.java)
     }
 
+    inner class RequestInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+            val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
+
+            val builder = chain.request()
+                .newBuilder()
+                .addHeader("Authorization", accessToken)
+                .build()
+
+            return chain.proceed(builder)
+        }
+    }
+
+    inner class ResponseInterceptor : Interceptor {
+
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val request = chain.request()
+            val response = chain.proceed(request)
+
+            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+            val refreshToken : String = sharedPref!!.getString("refreshToken", " ").toString()
+
+            when (response.code) {
+                400 -> {
+                    // todo Control Error
+                }
+                401 -> {
+                    val builder = response.request
+                        .newBuilder()
+                        .removeHeader("Authorization")
+                        .addHeader("Authorization", refreshToken)
+                        .build()
+
+                    return chain.proceed(builder)
+                }
+                402 -> {
+                    // todo Control Error
+                }
+            }
+            return response
+        }
+    }
+
     private fun continueDiary(diaryPk : Long) {
         getNetworkService()
 
-        val continueDiaryResponseCall = getNetworkService().continueDiary(diaryPk)
+        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
+        val continueDiaryResponseCall = getNetworkService().continueDiary(accessToken, diaryPk)
 
         continueDiaryResponseCall.enqueue(object : Callback<ContinueDiaryResponse> {
             override fun onResponse(

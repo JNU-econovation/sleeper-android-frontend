@@ -23,69 +23,75 @@ interface INetworkService {
         @Body loginRequest : LoginRequest
     ): Call<LoginResponse>
 
-    @POST("sleeps")
-    fun resetSettingTime(
-        @Query("userPk") userPk : Long
-    ):Call<ResetSettingTimeResponse>
-
     @GET("check")
     fun checkDiaryExistence(
+        @Header("authorization") accessToken: String,
         @Query("userPk") userPk : Long
     ): Call<CheckDiaryResponse>
 
     @GET("character/{userpk}")
     fun getCharacterInfo(
+        @Header("authorization") accessToken: String,
         @Path("userpk") userpk : Long,
         @Query("userPk") userPk : Long
     ): Call<CharacterInfoResponse>
 
     @POST("diaries")
     fun getDiaryPk(
+        @Header("authorization") accessToken: String,
         @Body saveDiaryRequest: SaveDiaryRequest
     ): Call<SaveDiaryResponse>
 
     @PUT("sleeps/{sleepPk}/actualTime")
     fun putActualWakeTime(
+        @Header("authorization") accessToken: String,
         @Path("sleepPk") sleepPk : Long,
         @Body setWakeTimeRequest : SetWakeTimeRequest
     ): Call<SetWakeTimeResponse>
 
     @GET("diaries/{diaryPk}")
     fun updateDiary(
+        @Header("authorization") accessToken: String,
         @Path("diaryPk") diaryPk : Long,
         @Body updateDiaryRequest : UpdateDiaryRequest
     ): Call<UpdateDiaryResponse>
 
     @GET("sleeps/{userPk}/setTime")
     fun getSettingTime(
+        @Header("authorization") accessToken: String,
         @Path("userPk") userPk : Long
     ): Call<GetSettingTimeResponse>
 
     @GET("sleeps/recommend")
     fun getRecommendTime(
+        @Header("authorization") accessToken: String,
         @Query("setSleepTime") setSleepTime : String
     ): Call<GetRecommendationResponse>
 
     @PUT("sleeps/{userPk}/setTime")
     fun setAlarmTime(
+        @Header("authorization") accessToken: String,
         @Path("userPk") userPk : Long,
         @Body setAlarmTimeRequest : SetAlarmTimeRequest
     ): Call<SetAlarmTimeResponse>
 
     @GET("calendar/{date}")
     fun getCalendarInside(
+        @Header("authorization") accessToken: String,
         @Path("date") date : String,
         @Query("userPk") userPk : Long
     ): Call<ShowDateResponse>
 
     @DELETE("diaries/{diaryPk}")
     fun deleteDiary(
+        @Header("authorization") accessToken: String,
         @Path("diaryPk") diaryPk : Long,
         @Query("userPk") userPk : Long
     ): Call<DeleteDiaryResponse>
 
     @PUT("diaries/{diaryPk}/continue")
     fun continueDiary(
+        @Header("authorization") accessToken: String,
         @Path("diaryPk") diaryPk : Long,
     ): Call<ContinueDiaryResponse>
 

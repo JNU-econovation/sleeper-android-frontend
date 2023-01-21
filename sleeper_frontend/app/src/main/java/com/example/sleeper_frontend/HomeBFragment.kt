@@ -22,6 +22,7 @@ import com.example.sleeper_frontend.dto.sleep.SetWakeTimeResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -71,13 +72,14 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
         Log.d("hyeon", "tryNetwork작동")
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userPk: Long = sharedPref!!.getLong("userPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", " ").toString()
 
         Log.d("hyeon", "변수 초기화")
 
 
         val characterInfoResponseCall: Call<CharacterInfoResponse> =
             getNetworkService().getCharacterInfo(
-                userpk = userPk, userPk = userPk
+                accessToken = accessToken, userpk = userPk, userPk = userPk
             )
 
         Log.d("hyeon", "call객체 초기화")
@@ -123,6 +125,8 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(RequestInterceptor())
+            .addInterceptor(ResponseInterceptor())
             .build()
 
         val gson : Gson = GsonBuilder()
@@ -138,6 +142,50 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
         return retrofit.create(INetworkService::class.java)
     }
 
+    inner class RequestInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+            val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
+
+            val builder = chain.request()
+                .newBuilder()
+                .addHeader("Authorization", accessToken)
+                .build()
+
+            return chain.proceed(builder)
+        }
+    }
+
+    inner class ResponseInterceptor : Interceptor {
+
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val request = chain.request()
+            val response = chain.proceed(request)
+
+            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+            val refreshToken : String = sharedPref!!.getString("refreshToken", " ").toString()
+
+            when (response.code) {
+                400 -> {
+                    // todo Control Error
+                }
+                401 -> {
+                    val builder = response.request
+                        .newBuilder()
+                        .removeHeader("Authorization")
+                        .addHeader("Authorization", refreshToken)
+                        .build()
+
+                    return chain.proceed(builder)
+                }
+                402 -> {
+                    // todo Control Error
+                }
+            }
+            return response
+        }
+    }
+
     private fun tryNetwork() {
         Log.d("hyeon", "tryNetwork작동")
         val temp = ZonedDateTime.now()
@@ -145,11 +193,12 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userPk : Long = sharedPref!!.getLong("userPk", 1L)
         val sleepPk : Long = sharedPref.getLong("sleepPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", " ").toString()
 
         Log.d("hyeon","변수 초기화")
 
         val setWakeTimeResponseCall : Call<SetWakeTimeResponse> = getNetworkService().putActualWakeTime(
-           sleepPk = sleepPk, SetWakeTimeRequest(actualWakeTime = actualWakeTime, userPk = userPk)
+           accessToken = accessToken, sleepPk = sleepPk, SetWakeTimeRequest(actualWakeTime = actualWakeTime, userPk = userPk)
         )
 
         Log.d("hyeon","call객체 초기화")
