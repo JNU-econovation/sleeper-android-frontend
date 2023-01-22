@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:plainpie="http://schemas.android.com/apk/res-auto"
     tools:context=".CalendarInsideFragment"
     android:background="@color/black_50">
 
@@ -61,10 +62,14 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <ImageView
-                android:layout_width="207dp"
-                android:layout_height="190dp"
-                android:src="@drawable/instance"
+            <az.plainpie.PieView
+                android:id="@+id/pieView"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                plainpie:inner_pie_padding="45"
+                plainpie:percentage="30"
+                plainpie:percentage_size="40"
+                plainpie:inner_text_visibility="true"
                 android:layout_marginTop="20dp"/>
 
             <RelativeLayout

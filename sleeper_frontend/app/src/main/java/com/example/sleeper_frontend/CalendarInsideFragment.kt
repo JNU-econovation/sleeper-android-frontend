@@ -189,6 +189,10 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
                         val setSleepTime = result.setSleepTime.toString()
                         val setWakeTime = result.setWakeTime.toString()
                         val content = result.content
+                        val score = result.score
+
+                        binding.pieView.percentage = score.toFloat()
+
                         diaryPk = result.diaryPk
 
                         val textActualSleepTime = actualSleepTime.substring(11 until 16)
