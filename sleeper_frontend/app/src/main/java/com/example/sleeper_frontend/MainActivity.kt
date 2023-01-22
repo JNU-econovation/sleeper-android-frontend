@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                 true
 
             }
+
             binding.bnvMain.selectedItemId = R.id.home
         }
 

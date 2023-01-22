@@ -40,7 +40,6 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
 
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
 
-        //HomeB에서 뒤로가기 버튼 눌렀을 때, arguments 유무 확인하기.
         if(arguments != null) {
             binding.diary.setText(requireArguments().getString("content").toString())
             val diaryPk : Long = requireArguments().getLong("diaryPk", 1)
@@ -59,6 +58,11 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
             binding.btnSaveDiary.setOnClickListener {
 
                 saveDiary()
+
+                val sharedPref = activity?.getSharedPreferences(("user_info"),Context.MODE_PRIVATE)
+                sharedPref!!.edit()
+                    .putBoolean("isSleep", true)
+                    .commit()
 
                 activity?.supportFragmentManager?.popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
 

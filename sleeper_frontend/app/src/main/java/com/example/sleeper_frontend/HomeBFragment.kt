@@ -57,6 +57,11 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
         getCharacter()
 
         binding.btnStopSleep.setOnClickListener {
+            val sharedPref = activity?.getSharedPreferences(("user_info"),Context.MODE_PRIVATE)
+            sharedPref!!.edit()
+                .putBoolean("isSleep", false)
+                .apply()
+
             tryNetwork()
         }
 
