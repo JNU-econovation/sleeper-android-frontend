@@ -48,6 +48,13 @@ interface INetworkService {
         @Body setWakeTimeRequest : SetWakeTimeRequest
     ): Call<SetWakeTimeResponse>
 
+    @PUT("diaries/{diaryPk}/continue")
+    fun continueDiary(
+        @Header("authorization") accessToken: String,
+        @Path("diaryPk") diaryPk : Long,
+        @Body continueDiaryRequest : ContinueDiaryRequest
+    ): Call<ContinueDiaryResponse>
+
     @GET("diaries/{diaryPk}")
     fun updateDiary(
         @Header("authorization") accessToken: String,
@@ -88,11 +95,5 @@ interface INetworkService {
         @Query("userPk") userPk : Long
     ): Call<DeleteDiaryResponse>
 
-    @PUT("diaries/{diaryPk}/continue")
-    fun continueDiary(
-        @Header("authorization") accessToken: String,
-        @Path("diaryPk") diaryPk : Long,
-        @Body continueDiaryRequest : ContinueDiaryRequest
-    ): Call<ContinueDiaryResponse>
 
 }

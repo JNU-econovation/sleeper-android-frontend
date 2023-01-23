@@ -207,6 +207,8 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
                         Log.d("다이어리 이어쓰기", "통신 상태 : 정상 통신")
                         val homeBFragment = HomeBFragment()
 
+                        requireFragmentManager().popBackStack("HomeFragment", POP_BACK_STACK_INCLUSIVE)
+
                         val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
                         transaction
                             .replace(R.id.fl_container, homeBFragment).commit()

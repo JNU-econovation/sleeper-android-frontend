@@ -45,11 +45,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val sharedPref = requireActivity().getSharedPreferences(("user_info"),Context.MODE_PRIVATE)
         val isSleep = sharedPref.getBoolean("isSleep", false)
 
-        if(isSleep) {
+        /*if(isSleep) {
             val homeBFragment = HomeBFragment()
             val transaction : FragmentTransaction? = activity?.supportFragmentManager?.beginTransaction()
             transaction?.replace(R.id.fl_container, homeBFragment)?.commit()
-        }
+        }*/
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
