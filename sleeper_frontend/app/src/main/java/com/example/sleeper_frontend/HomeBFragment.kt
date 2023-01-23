@@ -3,9 +3,7 @@ package com.example.sleeper_frontend
 
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,14 +13,11 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentHomeBBinding
 import com.example.sleeper_frontend.dto.CharacterInfoResponse
-import com.example.sleeper_frontend.dto.register.RegisterRequest
-import com.example.sleeper_frontend.dto.register.RegisterResponse
 import com.example.sleeper_frontend.dto.sleep.SetWakeTimeRequest
 import com.example.sleeper_frontend.dto.sleep.SetWakeTimeResponse
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
+import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -30,7 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDateTime
+import java.net.CookieManager
 import java.time.ZonedDateTime
 
 
@@ -62,7 +57,7 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
                 .putBoolean("isSleep", false)
                 .apply()
 
-            tryNetwork()
+            setWakeTime()
         }
 
         return binding.root
@@ -74,27 +69,21 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
     }
 
     private fun getCharacter() {
-        Log.d("hyeon", "tryNetwork작동")
-        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk: Long = sharedPref!!.getLong("userPk", 1L)
-        val accessToken : String = sharedPref.getString("accessToken", " ").toString()
 
-        Log.d("hyeon", "변수 초기화")
+        val sharedPref = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk: Long = sharedPref.getLong("userPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", " ").toString()
 
 
         val characterInfoResponseCall: Call<CharacterInfoResponse> =
             getNetworkService().getCharacterInfo(
-                accessToken = accessToken, userpk = userPk, userPk = userPk
+                accessToken = accessToken,  userPk = userPk
             )
 
-        Log.d("hyeon", "call객체 초기화")
 
         characterInfoResponseCall.enqueue(object : Callback<CharacterInfoResponse> {
-            override fun onResponse(
-                call: Call<CharacterInfoResponse>,
-                response: Response<CharacterInfoResponse>
-            ) {
-                Log.d("hyeon", "통신 성공")
+            override fun onResponse( call: Call<CharacterInfoResponse>, response: Response<CharacterInfoResponse>) {
+                Log.d("캐릭터 읽기", "통신 상태 : 성공")
                 if (response.isSuccessful && response.body() != null) {
 
                     val result: CharacterInfoResponse? = response.body()
@@ -102,23 +91,23 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
                     val speechBubble: String = result!!.speechBubble
 
-                    Log.d("hyeon", resultCode)
+                    Log.d("캐릭터 읽기", "결과 코드 : $resultCode")
                     val success: String = "200";
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
-                        Log.d("hyeon", "정상 통신")
+                        Log.d("캐릭터 읽기", "통신 상태 : 정상 통신")
                     }
                 }
             }
 
             override fun onFailure(call: Call<CharacterInfoResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("캐릭터 읽기", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", characterInfoResponseCall.toString())
+                Log.d("캐릭터 읽기", "예외 메세지 : $String")
+                Log.d("캐릭터 읽기","요청 내용 : $characterInfoResponseCall")
             }
         })
     }
@@ -130,8 +119,7 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
-            .addInterceptor(RequestInterceptor())
-            .addInterceptor(ResponseInterceptor())
+            .cookieJar(JavaNetCookieJar(CookieManager()))
             .build()
 
         val gson : Gson = GsonBuilder()
@@ -139,7 +127,7 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
             .create()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.21.2:8082/")
+            .baseUrl("http://192.168.0.110:8080/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
@@ -147,69 +135,24 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
         return retrofit.create(INetworkService::class.java)
     }
 
-    inner class RequestInterceptor : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-            val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
+    private fun setWakeTime() {
 
-            val builder = chain.request()
-                .newBuilder()
-                .addHeader("Authorization", accessToken)
-                .build()
-
-            return chain.proceed(builder)
-        }
-    }
-
-    inner class ResponseInterceptor : Interceptor {
-
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            val request = chain.request()
-            val response = chain.proceed(request)
-
-            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-            val refreshToken : String = sharedPref!!.getString("refreshToken", " ").toString()
-
-            when (response.code) {
-                400 -> {
-                    // todo Control Error
-                }
-                401 -> {
-                    val builder = response.request
-                        .newBuilder()
-                        .removeHeader("Authorization")
-                        .addHeader("Authorization", refreshToken)
-                        .build()
-
-                    return chain.proceed(builder)
-                }
-                402 -> {
-                    // todo Control Error
-                }
-            }
-            return response
-        }
-    }
-
-    private fun tryNetwork() {
-        Log.d("hyeon", "tryNetwork작동")
         val temp = ZonedDateTime.now()
         val actualWakeTime = temp.toString()
-        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
+        val sharedPref = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref.getLong("userPk", 1L)
         val sleepPk : Long = sharedPref.getLong("sleepPk", 1L)
         val accessToken : String = sharedPref.getString("accessToken", " ").toString()
 
-        Log.d("hyeon","변수 초기화")
 
         val setWakeTimeResponseCall : Call<SetWakeTimeResponse> = getNetworkService().putActualWakeTime(
            accessToken = accessToken, sleepPk = sleepPk, SetWakeTimeRequest(actualWakeTime = actualWakeTime, userPk = userPk)
         )
 
-        Log.d("hyeon","call객체 초기화")
         setWakeTimeResponseCall.enqueue(object : Callback<SetWakeTimeResponse> {
             override fun onResponse(call : Call<SetWakeTimeResponse>, response: Response<SetWakeTimeResponse>) {
-                Log.d("hyeon", "통신 성공")
+                Log.d("수면 종료", "통신 상태 : 성공")
+
                 if (response.isSuccessful && response.body() != null) {
 
                     val result: SetWakeTimeResponse = response.body()!!
@@ -217,13 +160,14 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
                     val sleepPk : Long = result.sleepPk
 
-                    Log.d("hyeon", resultCode)
+                    Log.d("수면 종료", "결과 코드 : $resultCode")
                     val success: String = "200";
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
+                        Log.d("수면 종료", "통신 상태 : 정상 통신")
                         sharedPref.edit().run{
                             putLong("sleepPk", sleepPk)
                             commit()
@@ -236,10 +180,10 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
                 }
             }
             override fun onFailure(call: Call<SetWakeTimeResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("수면 종료", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", setWakeTimeResponseCall.toString())
+                Log.d("수면 종료", "예외 메세지 : $string")
+                Log.d("수면 종료", "요청 내용 : $setWakeTimeResponseCall")
             }
         })
     }

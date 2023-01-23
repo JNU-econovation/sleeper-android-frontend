@@ -76,7 +76,7 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
             .create()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.21.2:8082/")
+            .baseUrl("http://192.168.21.2:8080/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
@@ -107,12 +107,12 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
             val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
             val refreshToken : String = sharedPref!!.getString("refreshToken", " ").toString()
 
-            when (response.code) {
+            when (response.code()) {
                 400 -> {
                     // todo Control Error
                 }
                 401 -> {
-                    val builder = response.request
+                    val builder = response.request()
                         .newBuilder()
                         .removeHeader("Authorization")
                         .addHeader("Authorization", refreshToken)

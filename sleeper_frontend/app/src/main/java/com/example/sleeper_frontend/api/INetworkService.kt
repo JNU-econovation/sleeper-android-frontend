@@ -23,16 +23,15 @@ interface INetworkService {
         @Body loginRequest : LoginRequest
     ): Call<LoginResponse>
 
-    @GET("check")
+    @GET("diaries/check")
     fun checkDiaryExistence(
         @Header("authorization") accessToken: String,
         @Query("userPk") userPk : Long
     ): Call<CheckDiaryResponse>
 
-    @GET("character/{userpk}")
+    @GET("character/")
     fun getCharacterInfo(
         @Header("authorization") accessToken: String,
-        @Path("userpk") userpk : Long,
         @Query("userPk") userPk : Long
     ): Call<CharacterInfoResponse>
 
@@ -93,6 +92,7 @@ interface INetworkService {
     fun continueDiary(
         @Header("authorization") accessToken: String,
         @Path("diaryPk") diaryPk : Long,
+        @Body continueDiaryRequest : ContinueDiaryRequest
     ): Call<ContinueDiaryResponse>
 
 }

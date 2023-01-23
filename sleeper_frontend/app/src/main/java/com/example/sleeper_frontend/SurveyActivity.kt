@@ -53,8 +53,7 @@ class SurveyActivity : AppCompatActivity() {
         }
 
         binding.btnSurveyFinished.setOnClickListener {
-
-            tryNetwork()
+            doRegister()
         }
 
     }
@@ -80,13 +79,20 @@ class SurveyActivity : AppCompatActivity() {
         }
 
         if (btn == binding.btnSurveyChooseStartTime) {
-            goalSleepTime = getString(R.string.survey_scr_textview, hourOfDay, min)
+            goalSleepTime = if(hourOfDay.toString().length < 2) {
+                "0$hourOfDay:$min"
+            } else {
+                "$hourOfDay:$min"
+            }
+            Log.d("goalSleepTime 초기화 값", goalSleepTime)
 
-            Log.d("hyeon", "goalSleepTime 초기화 완료")
         } else if (btn == binding.btnSurveyChooseEndTime) {
-            goalWakeTime = getString(R.string.survey_scr_textview, hourOfDay, min)
-
-            Log.d("hyeon", "goalWakeTime 초기화 완료")
+            goalWakeTime = if(hourOfDay.toString().length < 2) {
+                "0$hourOfDay:$min"
+            } else {
+                "$hourOfDay:$min"
+            }
+            Log.d("goalWakeTime 초기화 값", goalWakeTime)
         }
 
         val meridiem : String = if (hourOfDay > 12) {
@@ -130,7 +136,7 @@ class SurveyActivity : AppCompatActivity() {
             .create()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.21.2:8082/")
+            .baseUrl("http://192.168.0.110:8080/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
@@ -138,17 +144,17 @@ class SurveyActivity : AppCompatActivity() {
         return retrofit.create(INetworkService::class.java)
     }
 
-    private fun tryNetwork() {
-        Log.d("hyeon", "tryNetwork작동")
+    private fun doRegister() {
+        Log.d("회원 가입 통신", "통신 상태 : 시작")
         val userId = intent.getStringExtra("userId").toString()
 
         val userPassword = intent.getStringExtra("userPassword").toString()
         val userNickName = intent.getStringExtra("userNickName").toString()
         val userAge = intent.getLongExtra("userAge", 1)
-        val goalSleepTime = intent.getStringExtra("goalSleepTime").toString()
-        val goalWakeTime = intent.getStringExtra("goalWakeTime").toString()
+        val goalSleepTime = goalSleepTime
+        val goalWakeTime = goalWakeTime
 
-        Log.d("hyeon","변수 초기화")
+        Log.d("회원 가입 통신","통신 상태 : 변수 초기화 완료")
 
         val initRequest = RegisterRequest(
             userId = userId + "",
@@ -162,23 +168,25 @@ class SurveyActivity : AppCompatActivity() {
             initRequest
         )
 
-        Log.d("hyeon","call객체 초기화")
+        Log.d("회원 가입 통신","통신 상태 : call 객체 초기화")
 
         registerResponseCall.enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(call : Call<RegisterResponse>, response: Response<RegisterResponse>) {
-                Log.d("hyeon", "통신 성공")
+                Log.d("회원 가입 통신", "통신 상태 : 성공")
                 if (response.isSuccessful && response.body() != null) {
-
+                    Log.d("data",response.toString())
                     val result: RegisterResponse? = response.body()
                     val resultCode: String = response.code().toString()
 
-                    Log.d("hyeon", resultCode)
-                    val success: String = "200";
+                    Log.d("회원 가입 통신", "결과 코드 - $resultCode")
+                    val success: String = "201";
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
+                        Log.d("회원 가입 통신", "통신 상태 : 정상 통신")
+
                         val intent = Intent(this@SurveyActivity, LoginActivity::class.java)
                         startActivity(intent)
 
@@ -187,10 +195,10 @@ class SurveyActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("회원 가입 통신", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", registerResponseCall.toString())
+                Log.d("회원 가입 통신", "예외 메세지 - $string")
+                Log.d("회원 가입 통신", "요청 내용 - $registerResponseCall")
             }
         })
     }
