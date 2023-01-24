@@ -1,6 +1,6 @@
 package com.example.sleeper_frontend.api
 
-import com.example.sleeper_frontend.dto.CharacterInfoResponse
+import com.example.sleeper_frontend.dto.character.CharacterInfoResponse
 import com.example.sleeper_frontend.dto.calendar.ShowDateResponse
 import com.example.sleeper_frontend.dto.diary.*
 import com.example.sleeper_frontend.dto.login.LoginRequest
@@ -41,12 +41,14 @@ interface INetworkService {
         @Body saveDiaryRequest: SaveDiaryRequest
     ): Call<SaveDiaryResponse>
 
+
     @PUT("sleeps/{sleepPk}/actualTime")
     fun putActualWakeTime(
         @Header("authorization") accessToken: String,
         @Path("sleepPk") sleepPk : Long,
         @Body setWakeTimeRequest : SetWakeTimeRequest
     ): Call<SetWakeTimeResponse>
+
 
     @PUT("diaries/{diaryPk}/continue")
     fun continueDiary(
@@ -55,12 +57,14 @@ interface INetworkService {
         @Body continueDiaryRequest : ContinueDiaryRequest
     ): Call<ContinueDiaryResponse>
 
-    @GET("diaries/{diaryPk}")
+
+    @PUT("diaries/{diaryPk}")
     fun updateDiary(
         @Header("authorization") accessToken: String,
         @Path("diaryPk") diaryPk : Long,
-        @Body updateDiaryRequest : UpdateDiaryRequest
+        @Body updateDiaryRequest: UpdateDiaryRequest
     ): Call<UpdateDiaryResponse>
+
 
     @GET("sleeps/{userPk}/setTime")
     fun getSettingTime(

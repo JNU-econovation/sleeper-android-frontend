@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
@@ -21,7 +20,7 @@ import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeRequest
 import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
+import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -30,12 +29,15 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Integer.parseInt
+import java.net.CookieManager
+import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
 class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
     private lateinit var binding: FragmentAlarmInsideBinding
+    private lateinit var sendingTime : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +46,7 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
         binding = FragmentAlarmInsideBinding.inflate(inflater, container, false)
 
-        init()
+        getSettingTime()
 
         binding.btnSetSleepTime.setOnClickListener {
             showTimePicker(it)
@@ -66,43 +68,37 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
         return binding.root
     }
 
-    private fun init() {
-        getSettingTime()
-
-        getRecommendationTime()
-    }
-
     private fun getSettingTime() {
-        Log.d("hyeon", "tryNetwork작동")
 
-        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
-        val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
+        val sharedPref = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref.getLong("userPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", "").toString()
 
-        Log.d("hyeon","변수 초기화")
 
         val getSettingTimeResponseCall : Call<GetSettingTimeResponse> = getNetworkService().getSettingTime(
             accessToken = accessToken, userPk = userPk)
 
-        Log.d("hyeon","call객체 초기화")
+
         getSettingTimeResponseCall.enqueue(object : Callback<GetSettingTimeResponse> {
             override fun onResponse(call : Call<GetSettingTimeResponse>, response: Response<GetSettingTimeResponse>) {
-                Log.d("hyeon", "통신 성공")
-                if (response.isSuccessful && response.body() != null) {
 
+                if (response.isSuccessful && response.body() != null) {
+                    Log.d("설정 수면 시간 가져오기", "통신 상태 : 성공")
                     val result: GetSettingTimeResponse = response.body()!!
                     val resultCode: String = response.code().toString()
 
-                    Log.d("hyeon", resultCode)
-                    val success: String = "200";
+                    Log.d("설정 수면 시간 가져오기", "결과 코드 : $resultCode")
+                    val success: String = "200"
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
+                        Log.d("설정 수면 시간 가져오기", "통신 상태 : 정상 통신")
 
                         val setSleepTime = result.setSleepTime
                         val setWakeTime = result.setWakeTime
+
                         //보여줘야해. 화면에 오늘의 취침, 오늘의 기상 시간.
                         val setSleepTimeHour = setSleepTime.substring(0 until 2)
                         val setSleepTimeMin = setSleepTime.substring(3 until 5)
@@ -110,14 +106,16 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
                         val setWakeTimeMin = setWakeTime.substring(3 until 5)
 
                         showSettingTime(setSleepTimeHour, setSleepTimeMin, setWakeTimeHour, setWakeTimeMin)
+
+                        getRecommendationTime()
                     }
                 }
             }
             override fun onFailure(call: Call<GetSettingTimeResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("설정 수면 시간 가져오기", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", getSettingTimeResponseCall.toString())
+                Log.d("설정 수면 시간 가져오기", "예외 메세지 : $string")
+                Log.d("설정 수면 시간 가져오기", "요청 내용 : $getSettingTimeResponseCall")
             }
         })
     }
@@ -154,39 +152,72 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
         return settingHour.toString()
     }
 
+    private fun setTimeFormat(tempMeridiem : String, tempTime : String) : String {
+
+        val tempTimeHour = if(tempTime.length > 4) { tempTime.substring(0 until 2)} else { tempTime.substring(0 until 1)}
+        Log.d("tempTimeHour", tempTimeHour)
+        val tempTimeMin = if(tempTime.length > 4) { tempTime.substring(3 until 5)} else { tempTime.substring(2 until 4)}
+        Log.d("tempTimeMin", tempTimeMin)
+
+
+        val timeHourInt = if (tempMeridiem == "오후") {
+            parseInt(tempTimeHour) + 12
+        } else { parseInt(tempTimeHour) }
+
+
+        val timeString = "$timeHourInt:$tempTimeMin"
+
+        val setTime : String = if(timeString.length < 5) {
+            "0$timeString"
+        } else {
+            timeString
+        }
+
+        return setTime
+
+    }
+
     private fun getRecommendationTime() {
-        Log.d("hyeon", "tryNetwork작동")
 
-        val setSleepTime : String = binding.textviewAlarmInsideSleepTime.text.toString()
-        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
+        val tempSleepMeridiem = binding.textviewAlarmInsideSleepMeridiem.text.toString()
+        val tempSleepTime = binding.textviewAlarmInsideSleepTime.text.toString()
 
-        Log.d("hyeon","변수 초기화")
+        val setSleepTime = setTimeFormat(tempSleepMeridiem, tempSleepTime)
+
+        val sharedPref = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val accessToken : String = sharedPref.getString("accessToken", "").toString()
+
 
         val getRecommendationResponseCall : Call<GetRecommendationResponse> = getNetworkService().getRecommendTime(
             accessToken = accessToken, setSleepTime = setSleepTime)
 
-        Log.d("hyeon","call객체 초기화")
+
         getRecommendationResponseCall.enqueue(object : Callback<GetRecommendationResponse> {
             override fun onResponse(call : Call<GetRecommendationResponse>, response: Response<GetRecommendationResponse>) {
-                Log.d("hyeon", "통신 성공")
+
+                Log.d("기상 시간 추천", "통신 상태 : 성공")
                 if (response.isSuccessful && response.body() != null) {
+
 
                     val result: GetRecommendationResponse = response.body()!!
                     val resultCode: String = response.code().toString()
 
-                    Log.d("hyeon", resultCode)
-                    val success: String = "200";
+
+                    Log.d("기상 시간 추천", "결과 코드 : $resultCode")
+                    val success: String = "200"
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
+                        Log.d("기상 시간 추천", "통신 상태 : 정상 통신")
+
                         val recommendedTimeList : List<String> = result.recommendedTimes
                         val rec1 = recommendedTimeList[0]
                         val rec2 = recommendedTimeList[1]
                         val rec3 = recommendedTimeList[2]
                         val rec4 = recommendedTimeList[3]
+
 
                         showRecTime(rec1, binding.rec1Meridiem, binding.rec1Time)
                         showRecTime(rec2, binding.rec2Meridiem, binding.rec2Time)
@@ -197,16 +228,16 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
                 }
             }
             override fun onFailure(call: Call<GetRecommendationResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("기상 시간 추천", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", getRecommendationResponseCall.toString())
+                Log.d("기상 시간 추천", "예외 메세지 : $String")
+                Log.d("기상 시간 추천", "요청 내용 : $getRecommendationResponseCall")
             }
         })
     }
 
     private fun showRecTime(rectime : String, meridiemView : TextView, timeView : TextView) {
-        val rectime : String = rectime
+
         val hour : String = rectime.substring(0 until 2)
         val min : String = rectime.substring(3 until 5)
 
@@ -247,7 +278,7 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
             "오전"
         }
 
-        val hour : Int  = if (hourOfDay > 13) {
+        val hour : Int  = if (hourOfDay > 12) {
             hourOfDay - 12
         } else {
             hourOfDay
@@ -269,8 +300,7 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
-            .addInterceptor(RequestInterceptor())
-            .addInterceptor(ResponseInterceptor())
+            .cookieJar(JavaNetCookieJar(CookieManager()))
             .build()
 
         val gson : Gson = GsonBuilder()
@@ -286,50 +316,6 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
         return retrofit.create(INetworkService::class.java)
     }
 
-    inner class RequestInterceptor : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-            val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
-
-            val builder = chain.request()
-                .newBuilder()
-                .addHeader("Authorization", accessToken)
-                .build()
-
-            return chain.proceed(builder)
-        }
-    }
-
-    inner class ResponseInterceptor : Interceptor {
-
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            val request = chain.request()
-            val response = chain.proceed(request)
-
-            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-            val refreshToken : String = sharedPref!!.getString("refreshToken", " ").toString()
-
-            when (response.code()) {
-                400 -> {
-                    // todo Control Error
-                }
-                401 -> {
-                    val builder = response.request()
-                        .newBuilder()
-                        .removeHeader("Authorization")
-                        .addHeader("Authorization", refreshToken)
-                        .build()
-
-                    return chain.proceed(builder)
-                }
-                402 -> {
-                    // todo Control Error
-                }
-            }
-            return response
-        }
-    }
-
     private fun setOnRecommendBtnListener(recBtn : AppCompatButton, recMeridiem : TextView, recTime : TextView) {
 
         recBtn.setOnClickListener {
@@ -340,62 +326,71 @@ class AlarmInsideFragment : Fragment(R.layout.fragment_alarm_inside) {
     }
 
     private fun saveAlarmTime() {
-        Log.d("hyeon", "tryNetwork작동")
 
 
-        val localTime : String = LocalTime.now().toString()
+        val localDate : String = LocalDate.now().toString()
         val zonedDateTimeOffset : String = ZonedDateTime.now().offset.toString()
 
+        val tempSleepMeridiem = binding.textviewAlarmInsideSleepMeridiem.text.toString()
+        val tempSleepTime = binding.textviewAlarmInsideSleepTime.text.toString()
+        val sleepTime = setTimeFormat(tempSleepMeridiem, tempSleepTime)
 
-        val sleepTime : String = binding.textviewAlarmInsideSleepTime.text.toString()
-        val zonedDateTimeSleep : String = localTime+"T"+sleepTime+":00"+ zonedDateTimeOffset
-        val wakeTime : String = binding.textviewAlarmInsideWakeTime.text.toString()
-        var zonedDateTimeWake : String = localTime+"T"+wakeTime+":00"+ zonedDateTimeOffset
+        val tempWakeMeridiem = binding.textviewAlarmInsideWakeMeridiem.text.toString()
+        val tempWakeTime = binding.textviewAlarmInsideWakeTime.text.toString()
+        val wakeTime = setTimeFormat(tempWakeMeridiem, tempWakeTime)
 
+        val zonedDateTimeSleep : String = localDate + "T" + sleepTime  + zonedDateTimeOffset
+        val zonedDateTimeWake : String = localDate+"T"+ wakeTime + zonedDateTimeOffset
+
+//        val zonedDateTimeSleep : ZonedDateTime = ZonedDateTime.parse(zonedDateTimeSleepFormat)
+//        Log.d("test", zonedDateTimeSleep.toString())
+//        val zonedDateTimeWake : ZonedDateTime = ZonedDateTime.parse(zonedDateTimeWakeFormat)
 
         val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userPk : Long = sharedPref!!.getLong("userPk", 1L)
         val accessToken : String = sharedPref.getString("accessToken", " ").toString()
 
-        Log.d("hyeon","변수 초기화")
 
         val setAlarmTimeResponseCall : Call<SetAlarmTimeResponse> = getNetworkService().setAlarmTime(
-            accessToken =accessToken, userPk = userPk, SetAlarmTimeRequest(sleepTime = zonedDateTimeSleep, wakeTime = zonedDateTimeWake, userPk = userPk)
+            accessToken =accessToken, userPk = userPk, SetAlarmTimeRequest(setSleepTime = zonedDateTimeSleep, setWakeTime = zonedDateTimeWake, userPk = userPk)
         )
 
-        Log.d("hyeon","call객체 초기화")
         setAlarmTimeResponseCall.enqueue(object : Callback<SetAlarmTimeResponse> {
             override fun onResponse(call : Call<SetAlarmTimeResponse>, response: Response<SetAlarmTimeResponse>) {
-                Log.d("hyeon", "통신 성공")
+                Log.d("알람 시간 저장", "통신 상태 : 성공")
                 if (response.isSuccessful && response.body() != null) {
 
                     val result: SetAlarmTimeResponse = response.body()!!
                     val resultCode: String = response.code().toString()
 
-                    Log.d("hyeon", resultCode)
-                    val success: String = "200";
+                    Log.d("알람 시간 저장", "결과 코드 : $resultCode")
+                    val success: String = "200"
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
-                        activity?.supportFragmentManager?.popBackStack("AlarmFragment",
+                        Log.d("알람 시간 저장", "통신 상태 : 정상 통신")
+
+                        requireFragmentManager().popBackStack("AlarmFragment",
                             FragmentManager.POP_BACK_STACK_INCLUSIVE
                         )
 
-                        val alarmFragment = AlarmFragment()
-                        val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
-                        transaction
-                            .replace(R.id.fl_container, alarmFragment)
-                            .commit()
+                        Log.d("알람 시간 저장", "프래그먼트 상태 : popBackStack")
+
+//                        val alarmFragment = AlarmFragment()
+//                        val transaction : FragmentTransaction = requireFragmentManager().beginTransaction()
+//                        transaction
+//                            .replace(R.id.fl_container, alarmFragment)
+//                            .commit()
                     }
                 }
             }
             override fun onFailure(call: Call<SetAlarmTimeResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("알람 시간 저장", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", setAlarmTimeResponseCall.toString())
+                Log.d("알람 시간 저장", "예외 메세지 : $string")
+                Log.d("알람 시간 저장", "요청 내용 : $setAlarmTimeResponseCall")
             }
         })
     }

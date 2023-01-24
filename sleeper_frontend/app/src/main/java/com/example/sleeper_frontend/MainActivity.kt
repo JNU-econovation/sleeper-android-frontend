@@ -82,6 +82,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fl_container, fragment)

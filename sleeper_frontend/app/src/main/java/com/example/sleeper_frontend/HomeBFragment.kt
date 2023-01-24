@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentHomeBBinding
-import com.example.sleeper_frontend.dto.CharacterInfoResponse
+import com.example.sleeper_frontend.dto.character.CharacterInfoResponse
 import com.example.sleeper_frontend.dto.sleep.SetWakeTimeRequest
 import com.example.sleeper_frontend.dto.sleep.SetWakeTimeResponse
 import com.google.gson.Gson
@@ -82,7 +82,7 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
 
         characterInfoResponseCall.enqueue(object : Callback<CharacterInfoResponse> {
-            override fun onResponse( call: Call<CharacterInfoResponse>, response: Response<CharacterInfoResponse>) {
+            override fun onResponse(call: Call<CharacterInfoResponse>, response: Response<CharacterInfoResponse>) {
                 Log.d("캐릭터 읽기", "통신 상태 : 성공")
                 if (response.isSuccessful && response.body() != null) {
 

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.FragmentAlarmBinding
@@ -89,7 +90,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
                     val resultCode: String = response.code().toString()
 
                     Log.d("설정 수면 시간 가져오기", "결과 코드 : $resultCode")
-                    val success: String = "200";
+                    val success: String = "200"
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 

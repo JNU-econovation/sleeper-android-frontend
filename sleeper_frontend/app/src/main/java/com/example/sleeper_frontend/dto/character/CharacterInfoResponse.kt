@@ -1,4 +1,4 @@
-package com.example.sleeper_frontend.dto
+package com.example.sleeper_frontend.dto.character
 
 data class CharacterInfoResponse(
     var color : String,
