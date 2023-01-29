@@ -8,20 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.sleeper_frontend.api.INetworkService
-import com.example.sleeper_frontend.databinding.FragmentCalendarBinding
 import com.example.sleeper_frontend.databinding.FragmentCalendarInsideBinding
 import com.example.sleeper_frontend.dto.calendar.ShowDateResponse
 import com.example.sleeper_frontend.dto.diary.DeleteDiaryResponse
 import com.example.sleeper_frontend.dto.diary.UpdateDiaryRequest
 import com.example.sleeper_frontend.dto.diary.UpdateDiaryResponse
-import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeRequest
-import com.example.sleeper_frontend.dto.sleep.SetAlarmTimeResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
+import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -29,6 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.CookieManager
 import java.time.LocalTime
 
 
@@ -41,7 +37,7 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
 
         binding =  FragmentCalendarInsideBinding.inflate(inflater, container, false)
 
@@ -67,8 +63,7 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
-            .addInterceptor(RequestInterceptor())
-            .addInterceptor(ResponseInterceptor())
+            .cookieJar(JavaNetCookieJar(CookieManager()))
             .build()
 
         val gson : Gson = GsonBuilder()
@@ -76,56 +71,12 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
             .create()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.21.2:8082/")
+            .baseUrl("http://192.168.0.110:8080/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
 
         return retrofit.create(INetworkService::class.java)
-    }
-
-    inner class RequestInterceptor : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-            val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
-
-            val builder = chain.request()
-                .newBuilder()
-                .addHeader("Authorization", accessToken)
-                .build()
-
-            return chain.proceed(builder)
-        }
-    }
-
-    inner class ResponseInterceptor : Interceptor {
-
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            val request = chain.request()
-            val response = chain.proceed(request)
-
-            val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-            val refreshToken : String = sharedPref!!.getString("refreshToken", " ").toString()
-
-            when (response.code) {
-                400 -> {
-                    // todo Control Error
-                }
-                401 -> {
-                    val builder = response.request
-                        .newBuilder()
-                        .removeHeader("Authorization")
-                        .addHeader("Authorization", refreshToken)
-                        .build()
-
-                    return chain.proceed(builder)
-                }
-                402 -> {
-                    // todo Control Error
-                }
-            }
-            return response
-        }
     }
 
     private fun initDate() {
@@ -151,168 +102,195 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
     }
 
     private fun initCalendar() {
-        Log.d("hyeon", "tryNetwork작동")
+        Log.d("캘린더 초기화", "통신 상태 : 실행")
+
 
         val month = requireArguments().getString("month")
         val day = requireArguments().getString("day")
         val year = requireArguments().getString("year")
         val date = "$year-$month-$day"
 
-        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
-        val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
 
-        Log.d("hyeon","변수 초기화")
+        val sharedPref = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref.getLong("userPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", " ").toString()
+
+        Log.d("캘린더 초기화", "통신 상태 : 변수 초기화")
 
         val showDateResponseCall : Call<ShowDateResponse> = getNetworkService().getCalendarInside(
             accessToken = accessToken, date = date, userPk = userPk
         )
 
-        Log.d("hyeon","call객체 초기화")
+        Log.d("캘린더 초기화", "통신 상태 : Call 객체 초기화")
+
         showDateResponseCall.enqueue(object : Callback<ShowDateResponse> {
             override fun onResponse(call : Call<ShowDateResponse>, response: Response<ShowDateResponse>) {
-                Log.d("hyeon", "통신 성공")
+
+                Log.d("캘린더 초기화", "통신 상태 : 성공")
+
+                if(response.code() == 404) {
+
+                    Log.d("캘린더 초기화", "통신 상태 : 정상 통신 404")
+
+                    binding.diaryCalendarInsideFrg.setText("작성된 내용이 없습니다.")
+                    binding.goalTimeCalendarInsideFrg.text = ""
+                    binding.actualTimeCalendarInsideFrg.text = ""
+
+                }
+
                 if (response.isSuccessful && response.body() != null) {
 
                     val result: ShowDateResponse = response.body()!!
                     val resultCode: String = response.code().toString()
 
-                    Log.d("hyeon", resultCode)
-                    val success: String = "200";
+                    Log.d("캘린더 초기화", "결과 코드 : $resultCode")
+                    val success: String = "200"
                     val badRequest: String = "300"
+                    val notFound : String = "404"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
+                        Log.d("캘린더 초기화", "통신 상태 : 정상 통신 200")
+
                         val actualSleepTime = result.actualSleepTime.toString()
+                        Log.d("actualSleepTime", actualSleepTime)
                         val actualWakeTime = result.actualWakeTime.toString()
                         val setSleepTime = result.setSleepTime.toString()
                         val setWakeTime = result.setWakeTime.toString()
                         val content = result.content
+                        val score = result.score
+
+                        binding.pieView.percentage = score.toFloat()
+
                         diaryPk = result.diaryPk
 
-                        val textActualSleepTime = actualSleepTime.substring(11 until 16)
-                        val textActualWakeTime = actualWakeTime.substring(11 until 16)
-                        val textSetSleepTime = setSleepTime.substring(11 until 16)
-                        val textSetWakeTime = setWakeTime.substring(11 until 16)
+                        val textActualSleepTime = actualSleepTime.substring(12 until 17)
+                        val textActualWakeTime = actualWakeTime.substring(12 until 17)
+                        val textSetSleepTime = setSleepTime.substring(12 until 17)
+                        val textSetWakeTime = setWakeTime.substring(12 until 17)
 
 
-                        binding.diaryCalendarInsideFrg.text = content
+                        binding.diaryCalendarInsideFrg.setText(content)
                         binding.goalTimeCalendarInsideFrg.text = getString(R.string.calendar_inside_frg_goal_time, textSetSleepTime, textSetWakeTime)
                         binding.actualTimeCalendarInsideFrg.text = getString(R.string.calendar_frg_stats_real_time, textActualSleepTime, textActualWakeTime)
                     }
                 }
             }
             override fun onFailure(call: Call<ShowDateResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("캘린더 초기화", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", showDateResponseCall.toString())
+                Log.d("캘린더 초기화", "예외 메세지 : $string")
+                Log.d("캘린더 초기화", "요청 내용 : $showDateResponseCall")
             }
         })
 
     }
 
     private fun updateDiary(diaryPk : Long) {
-        Log.d("hyeon", "tryNetwork작동")
-
 
         val content = binding.diaryCalendarInsideFrg.text.toString()
 
-        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
-        val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
 
-        Log.d("hyeon","변수 초기화")
+        val sharedPref = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref.getLong("userPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", "").toString()
+
+
+        Log.d("다이어리 내용 수정", "통신 상태 : 변수 초기화")
+
 
         val updateDiaryResponseCall : Call<UpdateDiaryResponse> = getNetworkService().updateDiary(
-            accessToken = accessToken, diaryPk = diaryPk, UpdateDiaryRequest(content = content, userPk = userPk)
-        )
+            accessToken = accessToken, diaryPk = diaryPk, UpdateDiaryRequest(content = content))
 
-        Log.d("hyeon","call객체 초기화")
+        Log.d("다이어리 내용 수정", "통신 상태 : Call 객체 초기화")
+
         updateDiaryResponseCall.enqueue(object : Callback<UpdateDiaryResponse> {
             override fun onResponse(call : Call<UpdateDiaryResponse>, response: Response<UpdateDiaryResponse>) {
-                Log.d("hyeon", "통신 성공")
+                Log.d("다이어리 내용 수정", "통신 상태 : 성공")
+
+
                 if (response.isSuccessful && response.body() != null) {
 
                     val result: UpdateDiaryResponse = response.body()!!
                     val resultCode: String = response.code().toString()
 
-                    Log.d("hyeon", resultCode)
-                    val success: String = "200";
+
+                    Log.d("다이어리 내용 수정", "결과 코드 : $resultCode")
+                    val success: String = "200"
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
-                        Toast
-                            .makeText(activity, "감사일기 수정이 완료되었습니다.", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(activity, "감사일기 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             override fun onFailure(call: Call<UpdateDiaryResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("다이어리 내용 수정", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", updateDiaryResponseCall.toString())
+                Log.d("다이어리 내용 수정", "예외 메세지 : $string")
+                Log.d("다이어리 내용 수정", "요청 내용 : $updateDiaryResponseCall")
             }
         })
     }
 
     private fun deleteDiary(diaryPk : Long) {
-        Log.d("hyeon", "tryNetwork작동")
 
-        val sharedPref = activity?.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-        val userPk : Long = sharedPref!!.getLong("userPk", 1L)
-        val accessToken : String = sharedPref!!.getString("accessToken", " ").toString()
+        val sharedPref = requireActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userPk : Long = sharedPref.getLong("userPk", 1L)
+        val accessToken : String = sharedPref.getString("accessToken", "").toString()
 
-        Log.d("hyeon","변수 초기화")
+        Log.d("다이어리 내용 삭제", "통신 상태 : 변수 초기화")
 
         val deleteDiaryResponseCall : Call<DeleteDiaryResponse> = getNetworkService().deleteDiary(
             accessToken = accessToken, diaryPk = diaryPk, userPk = userPk
         )
 
-        Log.d("hyeon","call객체 초기화")
+        Log.d("다이어리 내용 삭제", "통신 상태 : Call 객체 생성")
+
         deleteDiaryResponseCall.enqueue(object : Callback<DeleteDiaryResponse> {
             override fun onResponse(call : Call<DeleteDiaryResponse>, response: Response<DeleteDiaryResponse>) {
-                Log.d("hyeon", "통신 성공")
+
+                Log.d("다이어리 내용 삭제", "통신 상태 : 성공")
+
                 if (response.isSuccessful && response.body() != null) {
 
                     val result: DeleteDiaryResponse = response.body()!!
                     val resultCode: String = response.code().toString()
 
-                    Log.d("hyeon", resultCode)
-                    val success: String = "200";
+                    Log.d("다이어리 내용 삭제", "결과 코드 : $resultCode")
+                    val success: String = "200"
                     val badRequest: String = "300"
                     val internalServerError: String = "500"
 
 
                     if (resultCode == success) {
 
-                        binding.diaryCalendarInsideFrg.text = ""
-                        Toast
-                            .makeText(activity, "감사일기가 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT)
-                            .show()
+                        binding.diaryCalendarInsideFrg.setText("감사일기가 삭제되었어요.")
+                        Toast.makeText(activity, "감사일기가 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+
+                        //감사일기 삭제하면 캘린더 내부 내용이 완전히 안뜸.
                     }
                 }
             }
             override fun onFailure(call: Call<DeleteDiaryResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("다이어리 내용 삭제", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", deleteDiaryResponseCall.toString())
+                Log.d("다이어리 내용 삭제", "예외 메세지 : $string")
+                Log.d("다이어리 내용 삭제", "요청 내용 : $deleteDiaryResponseCall")
             }
         })
     }
 
-    override fun onStop() {
+/*    override fun onStop() {
 
         activity?.supportFragmentManager?.popBackStack("CalendarFragment",
             FragmentManager.POP_BACK_STACK_INCLUSIVE
         )
 
         super.onStop()
-    }
+    }*/
 
 }

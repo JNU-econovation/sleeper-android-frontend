@@ -14,7 +14,7 @@ import com.example.sleeper_frontend.dto.login.LoginRequest
 import com.example.sleeper_frontend.dto.login.LoginResponse
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.Headers
+import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -44,12 +44,12 @@ class LoginActivity : AppCompatActivity() {
 
         val loginPref = getPreferences(Context.MODE_PRIVATE)
 
-        if(loginPref.getString("userId",null) != null) {
+        if(loginPref.getString("userId", null) != null) {
             init(loginPref)
         }
 
         binding.btnLogin.setOnClickListener {
-            setLoginBtnListener()
+            doLogin()
         }
 
         binding.btnRegister.setOnClickListener {
@@ -64,6 +64,10 @@ class LoginActivity : AppCompatActivity() {
 
         binding.editId.setText(userId)
         binding.editPw.setText(userPw)
+
+        //# 추후 보완 예정 내용
+        //# 로그인 버튼을 누르지 않아도 자동 로그인
+        //# 로그인이 안되면 Toast message 띄우기
     }
 
     private fun getNetworkService(): INetworkService {
@@ -73,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .cookieJar(JavaNetCookieJar(CookieManager()))
             .build()
 
         val gson : Gson = GsonBuilder()
@@ -80,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
             .create()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.21.2:8082/")
+            .baseUrl("http://192.168.0.110:8080/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
@@ -88,7 +93,7 @@ class LoginActivity : AppCompatActivity() {
         return retrofit.create(INetworkService::class.java)
     }
 
-    private fun setLoginBtnListener() {
+    private fun doLogin() {
         val userId : String = binding.editId.text.toString()
         val userPassword : String = binding.editPw.text.toString()
 
@@ -96,6 +101,7 @@ class LoginActivity : AppCompatActivity() {
 
         loginResponseCall.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call : Call<LoginResponse>, response: Response<LoginResponse>) {
+                Log.d("로그인 통신", "통신 상태 : 성공")
                 if (response.isSuccessful && response.body() != null) {
                     val result : LoginResponse? = response.body()
 
@@ -106,37 +112,40 @@ class LoginActivity : AppCompatActivity() {
                     val sleepPk : Long = result.sleepPk
 
                     if (response.code() == 200) {
+
+                        //자동 로그인
                         val loginPref = getPreferences(Context.MODE_PRIVATE)
                         loginPref.edit().run {
                             putString("userId", userId)
-                            putString("userPassword", userPassword)
+                            putString("userPw", userPassword)
                             commit()
                         }
 
+                        //필요 정보 저장
                         val sharedPref = getSharedPreferences("user_info", Context.MODE_PRIVATE)
                         sharedPref.edit().run{
                             putLong("userPk", userPk)
                             putString("accessToken", accessToken)
-                            putString("refreshToken", refreshToken)
+                            putString("refreshToken", refreshToken)//삭제 예정
                             putLong("sleepPk", sleepPk)
                             commit()
                         }
 
+                        //intent 전환
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
 
+                        finish()
                     }
                 } else {
-
-                    Log.d("hyeon", "비정상 통신")
-
+                    Log.d("로그인 통신", "통신 상태 : 비정상 통신")
                 }
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.d("hyeon", "통신 실패")
+                Log.d("로그인 통신", "통신 상태 : 실패")
                 val string = t.message.toString()
-                Log.d("hyeon", string)
-                Log.d("hyeon", loginResponseCall.toString())
+                Log.d("예외 메세지", string)
+                Log.d("요청 내용", loginResponseCall.toString())
             }
         })
     }

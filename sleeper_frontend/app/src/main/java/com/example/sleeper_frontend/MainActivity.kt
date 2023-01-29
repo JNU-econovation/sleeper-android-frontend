@@ -75,12 +75,15 @@ class MainActivity : AppCompatActivity() {
                 true
 
             }
+
             binding.bnvMain.selectedItemId = R.id.home
         }
 
     }
 
     private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fl_container, fragment)

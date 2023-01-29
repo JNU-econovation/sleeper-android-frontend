@@ -77,8 +77,8 @@
                     android:text="아직 통계가 나오지 않았습니다."
                     android:textSize="13sp"
                     android:fontFamily="@font/font_the150"
-                    android:textColor = "@color/black"
-                    android:layout_marginTop="50dp"/>
+                    android:textColor = "#AFB1CE"
+                    android:layout_marginTop="60dp"/>
 
                 <!--<androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"

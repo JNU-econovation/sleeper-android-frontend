@@ -6,5 +6,6 @@ data class ShowDateResponse(
     var content : String,
     var diaryPk : Long,
     var setSleepTime : List<String>,
-    var setWakeTime : List<String>
+    var setWakeTime : List<String>,
+    var score : Int
 )

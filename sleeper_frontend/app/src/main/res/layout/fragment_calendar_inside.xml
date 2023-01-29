@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:plainpie="http://schemas.android.com/apk/res-auto"
     tools:context=".CalendarInsideFragment"
     android:background="@color/black_50">
 
@@ -19,7 +20,7 @@
                 android:text="@string/calendar_frg_title"
                 android:textColor="@color/logo"
                 android:textSize="16sp"
-                android:fontFamily="@font/font_the150"/>
+                android:fontFamily="@font/font_the150" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -61,10 +62,14 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <ImageView
-                android:layout_width="207dp"
-                android:layout_height="190dp"
-                android:src="@drawable/instance"
+            <az.plainpie.PieView
+                android:id="@+id/pieView"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                plainpie:inner_pie_padding="45"
+                plainpie:percentage="30"
+                plainpie:percentage_size="40"
+                plainpie:inner_text_visibility="true"
                 android:layout_marginTop="20dp"/>
 
             <RelativeLayout
@@ -85,10 +90,11 @@
                         android:layout_height="245dp"
                         android:src="@drawable/calendar_inside_frg_background_diary" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/diary_calendar_inside_frg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:backgroundTint="#FFFFFFFF"
                         android:text=""
                         android:textColor="#000000"
                         android:textSize="12sp"
@@ -158,7 +164,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_horizontal"
                                 android:fontFamily="@font/font_the160"
                                 android:text="@string/calendar_inside_frg_goal"
                                 android:textColor="@color/goal_time"
@@ -168,7 +174,7 @@
                                 android:id="@+id/goal_time_calendar_inside_frg"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="7dp"
                                 android:fontFamily="@font/font_the150"
                                 android:text="@string/calendar_inside_frg_goal_time"
@@ -193,7 +199,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_horizontal"
                                 android:fontFamily="@font/font_the160"
                                 android:text="@string/calendar_inside_frg_real"
                                 android:textColor="@color/real_time"
@@ -203,7 +209,7 @@
                                 android:id="@+id/actual_time_calendar_inside_frg"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="7dp"
                                 android:fontFamily="@font/font_the150"
                                 android:text="@string/calendar_inside_frg_real_time"
