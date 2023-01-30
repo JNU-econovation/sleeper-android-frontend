@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -41,7 +42,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val sharedPref = requireActivity().getSharedPreferences(("user_info"),Context.MODE_PRIVATE)
         val isSleep = sharedPref.getBoolean("isSleep", false)
-
+        var isListening = false
         /*if(isSleep) {
             val homeBFragment = HomeBFragment()
             val transaction : FragmentTransaction? = activity?.supportFragmentManager?.beginTransaction()
@@ -59,6 +60,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.btnStartSleep.setOnClickListener {
             setAlarmTime()
             checkDiary()
+        }
+
+        binding.btnCharacter.setOnClickListener {
+            isListening = !isListening
+            if(isListening) {
+                binding.imgCharacter.setImageResource(R.drawable.star1_music)
+            } else {
+                binding.imgCharacter.setImageResource(R.drawable.star1_basic)
+            }
+
         }
 
         return binding.root
@@ -87,6 +98,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     val resultCode: String = response.code().toString()
 
                     val speechBubble : String = result!!.speechBubble
+
+//                    binding.messageHome.text = speechBubble
 
                     Log.d("캐릭터 초기화", "결과 코드 : $resultCode")
 

@@ -9,7 +9,7 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 
 class EventDecorator(context: Context, date: CalendarDay): DayViewDecorator {
     private var date = date
-    val drawable: Drawable = ContextCompat.getDrawable(context, R.drawable.calendar_selector)!!
+    val drawable: Drawable = ContextCompat.getDrawable(context, R.drawable.background_date_selected)!!
 
     override fun shouldDecorate(day: CalendarDay?): Boolean{
         return day?.equals(date)!!

@@ -18,12 +18,12 @@
             android:gravity="center"
             android:layout_marginTop="45dp">
 
-            <android.widget.Button
+            <!--<android.widget.Button
                 android:id="@+id/btn_show_more"
                 android:layout_width="24dp"
                 android:layout_height="25dp"
                 android:background="@drawable/ic_show_more"
-                android:layout_marginLeft="35dp"/>
+                android:layout_marginLeft="35dp"/>-->
 
             <View
                 android:layout_width="0dp"
@@ -43,12 +43,12 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <android.widget.Button
+            <!--<android.widget.Button
                 android:layout_width="24dp"
                 android:layout_height="25dp"
                 android:background="@drawable/ic_issue"
                 android:layout_marginRight="35dp"/>
-
+-->
         </LinearLayout>
 
         <android.widget.RelativeLayout
@@ -56,22 +56,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="80dp" >
 
             <EditText
                 android:id="@+id/diary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="380dp"
+                android:layout_height="550dp"
                 android:gravity="top"
-                android:paddingTop="27dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingTop="40dp"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
                 android:paddingBottom="380dp"
 
-                android:background="@drawable/diary_background"
+                android:background="@drawable/letter"
                 android:hint="@string/diary_frag_hint"
                 android:fontFamily="@font/font_the140"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="@color/purple"
                 android:textColorHint="@color/lilac"
 
@@ -87,7 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@id/diary"
                 android:layout_alignBottom="@+id/diary"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="45dp"
+                android:layout_marginEnd="15dp"
                 android:text="@string/diary_frag_save"
                 android:fontFamily="@font/font_the160"
                 android:textSize="15sp"

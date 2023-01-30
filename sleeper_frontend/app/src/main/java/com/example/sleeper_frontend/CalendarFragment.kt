@@ -2,6 +2,7 @@ package com.example.sleeper_frontend
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,20 +29,24 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
         //다시 돌아왔을 때, selectedday에만 표시/
 
-
 //        val todayDecorator = context?.let { TodayDecorator(it) }
 //        binding.calendar.addDecorators(todayDecorator)
 
         lateinit var selectedDate : CalendarDay
 
-        if(binding.calendar.selectedDate != null) {
+/*        if(binding.calendar.selectedDate != null) {
+
+            Log.d("캘린더 test", "selectedDate null 아님")
             selectedDate = binding.calendar.selectedDate
 
             val eventDecorator = context?.let { EventDecorator(it, selectedDate) }
             binding.calendar.addDecorator(eventDecorator)
-        }
 
-        binding.calendar.setOnDateChangedListener { widget, date, selected ->
+        } else {
+            Log.d("캘린더 test", "selectedDate없어요")
+        }*/
+
+        binding.calendar.setOnDateChangedListener { _, _, _ ->
 
 //            binding.calendar.removeDecorator(todayDecorator)
 
@@ -74,6 +79,32 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         }
 
         return binding.root
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        lateinit var selectedDate : CalendarDay
+
+        if(binding.calendar.selectedDate != null) {
+
+            Log.d("캘린더 selectedDate", "!null")
+            selectedDate = binding.calendar.selectedDate
+
+            val eventDecorator = context?.let { EventDecorator(it, selectedDate) }
+            binding.calendar.addDecorator(eventDecorator)
+
+        } else {
+            Log.d("캘린더 selectedDate", "null")
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
 }

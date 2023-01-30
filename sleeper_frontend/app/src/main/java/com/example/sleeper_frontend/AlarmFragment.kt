@@ -130,6 +130,7 @@ class AlarmFragment : Fragment(R.layout.fragment_alarm) {
         binding.wakeTime.text = getString(R.string.alarm_frg_textview_time, setWakeTimeHour, setWakeTimeMin)
     }
 
+
     private fun getMeridiem(settingHour : String?) : String {
         val settingHour = parseInt(settingHour)
 

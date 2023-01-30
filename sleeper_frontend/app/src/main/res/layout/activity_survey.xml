@@ -6,11 +6,12 @@
     android:orientation="vertical"
     android:paddingTop="120dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        style="@style/MainLogo" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="125dp"
+        android:layout_height="48dp"
+        android:src="@drawable/sleeper_logo"
+        android:layout_gravity="center_horizontal"/>
+
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
@@ -40,6 +41,13 @@
 
             <android.widget.Button
                 android:id="@+id/btnSurveyChooseStartTime"
+                android:layout_width="70dp"
+                android:layout_height="29dp"
+                android:layout_gravity="right"
+                android:background="@drawable/icon_choose_time" />
+
+            <!--<android.widget.Button
+                android:id="@+id/btnSurveyChooseStartTime"
                 android:layout_width="65dp"
                 android:layout_height="25dp"
                 android:layout_gravity="right"
@@ -47,7 +55,7 @@
                 android:elevation="10dp"
                 android:text="@string/survey_scr_btn_choose"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="10sp" />-->
 
         </androidx.appcompat.widget.LinearLayoutCompat>
         <FrameLayout
@@ -74,7 +82,8 @@
                     android:text=""
                     android:fontFamily="@font/font_the140"
                     android:textColor="@color/white"
-                    android:textSize="27sp" />
+                    android:textSize="27sp"
+                    android:layout_marginStart="10dp" />
 
                 <View
                     android:layout_width="0dp"
@@ -88,7 +97,8 @@
                     android:text=""
                     android:fontFamily="@font/font_the140"
                     android:textColor="@color/white"
-                    android:textSize="62sp" />
+                    android:textSize="62sp"
+                    android:layout_marginEnd="10dp"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -124,6 +134,13 @@
 
             <android.widget.Button
                 android:id="@+id/btnSurveyChooseEndTime"
+                android:layout_width="70dp"
+                android:layout_height="29dp"
+                android:layout_gravity="right"
+                android:background="@drawable/icon_choose_time" />
+
+            <!--<android.widget.Button
+                android:id="@+id/btnSurveyChooseEndTime"
                 android:layout_width="65dp"
                 android:layout_height="25dp"
                 android:layout_gravity="right"
@@ -131,7 +148,7 @@
                 android:elevation="10dp"
                 android:text="@string/survey_scr_btn_choose"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="10sp" />-->
 
         </androidx.appcompat.widget.LinearLayoutCompat>
         <FrameLayout
@@ -158,7 +175,8 @@
                     android:text=""
                     android:fontFamily="@font/font_the140"
                     android:textColor="@color/white"
-                    android:textSize="27sp" />
+                    android:textSize="27sp"
+                    android:layout_marginStart="10dp" />
 
                 <View
                     android:layout_width="0dp"
@@ -172,7 +190,8 @@
                     android:text=""
                     android:fontFamily="@font/font_the140"
                     android:textColor="@color/white"
-                    android:textSize="62sp" />
+                    android:textSize="62sp"
+                    android:layout_marginEnd="10dp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </FrameLayout>

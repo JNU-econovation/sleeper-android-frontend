@@ -91,6 +91,8 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
 
                     val speechBubble: String = result!!.speechBubble
 
+//                    binding.messageHomeB.text = speechBubble
+
                     Log.d("캐릭터 읽기", "결과 코드 : $resultCode")
                     val success: String = "200";
                     val badRequest: String = "300"
@@ -102,6 +104,7 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
                     }
                 }
             }
+
 
             override fun onFailure(call: Call<CharacterInfoResponse>, t: Throwable) {
                 Log.d("캐릭터 읽기", "통신 상태 : 실패")
@@ -179,6 +182,7 @@ class HomeBFragment : Fragment(R.layout.fragment_home_b) {
                     }
                 }
             }
+
             override fun onFailure(call: Call<SetWakeTimeResponse>, t: Throwable) {
                 Log.d("수면 종료", "통신 상태 : 실패")
                 val string = t.message.toString()

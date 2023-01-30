@@ -74,9 +74,9 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
             }
         }
 
-        binding.btnShowMore.setOnClickListener {
+/*        binding.btnShowMore.setOnClickListener {
             clickBtnPopup()
-        }
+        }*/
 
         binding.diary.addTextChangedListener {
             enableBtn(binding.diary)
@@ -87,7 +87,7 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
     }
 
 
-    private fun clickBtnPopup() {
+/*    private fun clickBtnPopup() {
         val popup : PopupDialogFragment = PopupDialogFragment().getInstance()
         activity?.supportFragmentManager?.let { fragmentManager ->
             popup.show(
@@ -95,7 +95,7 @@ class DiaryFragment : Fragment(R.layout.fragment_diary) {
                 "tag"
             )
         }
-    }
+    }*/
 
     private fun saveDiary() {
 

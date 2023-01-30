@@ -46,6 +46,10 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.btnOkay.isEnabled = false
 
+        binding.btnVerification.setOnClickListener {
+            Toast.makeText(this@RegisterActivity, "사용 가능한 아이디입니다.", Toast.LENGTH_SHORT).show()
+        }
+
         addEditIdListener()
 
         addEditPwListener()
