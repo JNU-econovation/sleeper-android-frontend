@@ -19,14 +19,14 @@
             android:text="@string/alarm_frg_title"
             android:textColor="@color/logo"
             android:textSize="16sp"
-            android:fontFamily="@font/font_the150"/>
+            android:fontFamily="@font/font_the150" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="120dp">
+            android:layout_marginTop="110dp" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,21 +38,21 @@
                 android:textSize="15sp" />
 
             <FrameLayout
-                android:layout_width="270dp"
-                android:layout_height="83dp"
+                android:layout_width="280dp"
+                android:layout_height="110dp"
                 android:layout_marginTop="12dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/show_time_background" />
+                    android:src="@drawable/show_time_background_big" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
-                    android:padding="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/sleep_meridiem"
@@ -61,7 +61,8 @@
                         android:text=""
                         android:fontFamily="@font/font_the140"
                         android:textColor="@color/white"
-                        android:textSize="27sp" />
+                        android:textSize="35sp"
+                        android:layout_marginStart="20dp"/>
 
                     <View
                         android:layout_width="0dp"
@@ -75,7 +76,8 @@
                         android:text=""
                         android:fontFamily="@font/font_the140"
                         android:textColor="@color/white"
-                        android:textSize="62sp" />
+                        android:textSize="80sp"
+                        android:layout_marginEnd="20dp"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -100,21 +102,21 @@
                 android:textSize="15sp" />
 
             <FrameLayout
-                android:layout_width="270dp"
-                android:layout_height="83dp"
+                android:layout_width="280dp"
+                android:layout_height="110dp"
                 android:layout_marginTop="12dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/show_time_background" />
+                    android:src="@drawable/show_time_background_big" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
-                    android:padding="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp">
 
                     <TextView
                         android:id="@+id/wake_meridiem"
@@ -123,7 +125,8 @@
                         android:text=""
                         android:fontFamily="@font/font_the140"
                         android:textColor="@color/white"
-                        android:textSize="27sp" />
+                        android:textSize="35sp"
+                        android:layout_marginStart="20dp" />
 
                     <View
                         android:layout_width="0dp"
@@ -137,7 +140,8 @@
                         android:text=""
                         android:fontFamily="@font/font_the140"
                         android:textColor="@color/white"
-                        android:textSize="62sp" />
+                        android:textSize="80sp"
+                        android:layout_marginEnd="20dp" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

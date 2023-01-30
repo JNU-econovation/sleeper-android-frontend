@@ -58,7 +58,7 @@
                     android:layout_width="7dp"
                     android:layout_height="12dp"
                     android:background="@drawable/arrow_right"
-                    android:layout_marginRight="50dp"/>
+                    android:layout_marginRight="50dp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -67,15 +67,15 @@
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 plainpie:inner_pie_padding="45"
-                plainpie:percentage="30"
+                plainpie:percentage="0"
                 plainpie:percentage_size="40"
-                plainpie:inner_text_visibility="true"
-                android:layout_marginTop="20dp"/>
+                plainpie:inner_text_visibility="false"
+                android:layout_marginTop="50dp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="40dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -97,9 +97,9 @@
                         android:backgroundTint="#FFFFFFFF"
                         android:text=""
                         android:textColor="#000000"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:fontFamily="@font/font_the130"
-                        android:paddingTop="50dp"
+                        android:paddingTop="60dp"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:paddingEnd="10dp"
@@ -110,27 +110,27 @@
                         android:layout_height="wrap_content"
                         android:layout_alignRight="@+id/diary"
                         android:layout_alignBottom="@+id/diary"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="17dp" >
+                        android:layout_marginRight="25dp"
+                        android:layout_marginBottom="20dp" >
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_update_diary"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:background="@color/transparent"
                             android:text="@string/calendar_inside_frg_update"
                             android:textColor="#9F9A67"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:fontFamily="@font/font_the140" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_delete_diary"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:background="@color/transparent"
                             android:text="@string/calendar_inside_frg_delete"
                             android:textColor="#C13636"
-                            android:textSize="10sp"
+                            android:textSize="13sp"
                             android:fontFamily="@font/font_the140"
                             android:layout_marginLeft="15dp"/>
 
@@ -145,15 +145,16 @@
                     android:layout_centerHorizontal="true">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="231dp"
-                        android:layout_height="76dp"
-                        android:background="@drawable/calendar_inside_frg_background_time" />
+                        android:layout_width="260dp"
+                        android:layout_height="110dp"
+                        android:background="@drawable/calendar_inside_frg_show_time" />
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="horizontal">
+                        android:layout_centerHorizontal="true"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="7dp">
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="wrap_content"
@@ -177,7 +178,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="7dp"
                                 android:fontFamily="@font/font_the150"
-                                android:text="@string/calendar_inside_frg_goal_time"
+                                android:text=""
                                 android:textColor="@color/goal_time"
                                 android:textSize="12sp" />
 
@@ -212,7 +213,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="7dp"
                                 android:fontFamily="@font/font_the150"
-                                android:text="@string/calendar_inside_frg_real_time"
+                                android:text=""
                                 android:textColor="@color/real_time"
                                 android:textSize="12sp" />
 

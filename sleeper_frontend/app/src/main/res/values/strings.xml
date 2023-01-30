@@ -80,4 +80,30 @@
     <string name="alarm_inside_frg_textview_set_time">시간 설정</string>
     <string name="alarm_inside_frg_textview_recommend_time">추천 기상 시간</string>
     <string name="alarm_inside_frg_textview_finish">완료</string>
+
+    <string-array name="custom_weekdays">
+        <item>S</item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+    </string-array>
+
+    <string-array name="custom_months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
 </resources>

@@ -9,24 +9,24 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
         android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="45dp">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/font_the150"
             android:text="@string/alarm_inside_frg_title"
             android:textColor="@color/logo"
-            android:textSize="16sp"
-            android:fontFamily="@font/font_the150"/>
+            android:textSize="16sp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="45dp">
+            android:layout_marginTop="60dp"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -37,8 +37,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="@string/alarm_inside_frg_textview_sleep_time"
                     android:fontFamily="@font/font_the150"
+                    android:text="@string/alarm_inside_frg_textview_sleep_time"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
@@ -49,6 +49,13 @@
 
                 <android.widget.Button
                     android:id="@+id/btn_set_sleep_time"
+                    android:layout_width="70dp"
+                    android:layout_height="29dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/icon_set_time" />
+
+                <!--<android.widget.Button
+                    android:id="@+id/btn_set_sleep_time"
                     android:layout_width="65dp"
                     android:layout_height="25dp"
                     android:layout_gravity="end"
@@ -56,7 +63,7 @@
                     android:elevation="10dp"
                     android:text="@string/alarm_inside_frg_textview_set_time"
                     android:textColor="@color/white"
-                    android:textSize="10sp" />
+                    android:textSize="10sp" />-->
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -74,15 +81,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
-                    android:padding="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/textview_alarm_inside_sleep_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:layout_marginStart="10dp"
                         android:fontFamily="@font/font_the140"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="27sp" />
 
@@ -95,8 +103,9 @@
                         android:id="@+id/textview_alarm_inside_sleep_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:layout_marginEnd="10dp"
                         android:fontFamily="@font/font_the140"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="62sp" />
 
@@ -109,15 +118,15 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/seperator"
-            android:layout_marginTop="25dp"/>
+            android:layout_marginTop="30dp"
+            android:src="@drawable/seperator" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -128,8 +137,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="@string/alarm_inside_frg_textview_wake_time"
                     android:fontFamily="@font/font_the150"
+                    android:text="@string/alarm_inside_frg_textview_wake_time"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
@@ -140,6 +149,13 @@
 
                 <android.widget.Button
                     android:id="@+id/btn_set_wake_time"
+                    android:layout_width="70dp"
+                    android:layout_height="29dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/icon_set_time" />
+
+                <!--<android.widget.Button
+                    android:id="@+id/btn_set_wake_time"
                     android:layout_width="65dp"
                     android:layout_height="25dp"
                     android:layout_gravity="end"
@@ -147,7 +163,7 @@
                     android:elevation="10dp"
                     android:text="@string/alarm_inside_frg_textview_set_time"
                     android:textColor="@color/white"
-                    android:textSize="10sp" />
+                    android:textSize="10sp" />-->
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -165,15 +181,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
-                    android:padding="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/textview_alarm_inside_wake_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:layout_marginStart="10dp"
                         android:fontFamily="@font/font_the140"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="27sp" />
 
@@ -186,8 +203,9 @@
                         android:id="@+id/textview_alarm_inside_wake_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
+                        android:layout_marginEnd="10dp"
                         android:fontFamily="@font/font_the140"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="62sp" />
 
@@ -200,26 +218,26 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="270dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/alarm_inside_frg_textview_recommend_time"
-                android:textSize="15sp"
                 android:fontFamily="@font/font_the150"
-                android:textColor="#FFFFFF"/>
+                android:text="@string/alarm_inside_frg_textview_recommend_time"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp" >
-                
+                android:layout_marginTop="25dp">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/rec1"
                         android:layout_width="130dp"
@@ -230,28 +248,28 @@
                         android:id="@+id/rec1_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="오전"
-                        android:fontFamily="@font/font_the140"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
                         android:layout_alignLeft="@+id/rec1"
                         android:layout_alignBottom="@+id/rec1"
                         android:layout_marginStart="10dp"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/font_the140"
+                        android:text="오전"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/rec1_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="08:00"
-                        android:fontFamily="@font/font_the140"
-                        android:textColor="@color/white"
-                        android:textSize="30sp"
                         android:layout_alignRight="@+id/rec1"
                         android:layout_alignBottom="@+id/rec1"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="5dp"/>
-                    
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/font_the140"
+                        android:text="08:00"
+                        android:textColor="@color/white"
+                        android:textSize="30sp" />
+
                 </RelativeLayout>
 
                 <View
@@ -273,27 +291,27 @@
                         android:id="@+id/rec2_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="오전"
-                        android:fontFamily="@font/font_the140"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
                         android:layout_alignLeft="@+id/rec2"
                         android:layout_alignBottom="@+id/rec2"
                         android:layout_marginStart="10dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/font_the140"
+                        android:text="오전"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/rec2_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="08:00"
-                        android:fontFamily="@font/font_the140"
-                        android:textColor="@color/white"
-                        android:textSize="30sp"
                         android:layout_alignRight="@+id/rec2"
                         android:layout_alignBottom="@+id/rec2"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="5dp"/>
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/font_the140"
+                        android:text="08:00"
+                        android:textColor="@color/white"
+                        android:textSize="30sp" />
 
                 </RelativeLayout>
 
@@ -318,27 +336,27 @@
                         android:id="@+id/rec3_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="오전"
-                        android:fontFamily="@font/font_the140"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
                         android:layout_alignLeft="@+id/rec3"
                         android:layout_alignBottom="@+id/rec3"
                         android:layout_marginStart="10dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/font_the140"
+                        android:text="오전"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/rec3_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="08:00"
-                        android:fontFamily="@font/font_the140"
-                        android:textColor="@color/white"
-                        android:textSize="30sp"
                         android:layout_alignRight="@+id/rec3"
                         android:layout_alignBottom="@+id/rec3"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="5dp"/>
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/font_the140"
+                        android:text="08:00"
+                        android:textColor="@color/white"
+                        android:textSize="30sp" />
 
                 </RelativeLayout>
 
@@ -361,27 +379,27 @@
                         android:id="@+id/rec4_meridiem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="오전"
-                        android:fontFamily="@font/font_the140"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
                         android:layout_alignLeft="@+id/rec4"
                         android:layout_alignBottom="@+id/rec4"
                         android:layout_marginStart="10dp"
-                        android:layout_marginBottom="10dp" />
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/font_the140"
+                        android:text="오전"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/rec4_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="08:00"
-                        android:fontFamily="@font/font_the140"
-                        android:textColor="@color/white"
-                        android:textSize="30sp"
                         android:layout_alignRight="@+id/rec4"
                         android:layout_alignBottom="@+id/rec4"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="5dp"/>
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/font_the140"
+                        android:text="08:00"
+                        android:textColor="@color/white"
+                        android:textSize="30sp" />
 
                 </RelativeLayout>
 
@@ -393,12 +411,12 @@
             android:id="@+id/btn_finish"
             android:layout_width="108dp"
             android:layout_height="32dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/btn_okay_enabled_true"
+            android:fontFamily="@font/font_the160"
             android:text="@string/alarm_inside_frg_textview_finish"
             android:textColor="#2D2F6E"
-            android:textSize="13sp"
-            android:fontFamily="@font/font_the160"
-            android:layout_marginTop="30dp"/>
+            android:textSize="13sp" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -42,11 +42,11 @@ class LoginActivity : AppCompatActivity() {
 
         binding.activityLoginLayout.setBackgroundResource(R.drawable.login_background)
 
-        val loginPref = getPreferences(Context.MODE_PRIVATE)
+        /*val loginPref = getPreferences(Context.MODE_PRIVATE)
 
         if(loginPref.getString("userId", null) != null) {
             init(loginPref)
-        }
+        }*/
 
         binding.btnLogin.setOnClickListener {
             doLogin()

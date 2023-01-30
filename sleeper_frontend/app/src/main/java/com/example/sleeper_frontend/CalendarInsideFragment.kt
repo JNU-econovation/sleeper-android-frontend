@@ -1,6 +1,7 @@
 package com.example.sleeper_frontend
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -39,8 +40,11 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
     ): View? {
 
 
-        binding =  FragmentCalendarInsideBinding.inflate(inflater, container, false)
+        binding = FragmentCalendarInsideBinding.inflate(inflater, container, false)
 
+        binding.pieView.setPercentageBackgroundColor(Color.parseColor("#FF8478BD"))
+        binding.pieView.setTextColor(Color.parseColor("#ff2C2F6E"))
+        binding.pieView.setInnerBackgroundColor(Color.parseColor("#ffF8F8F8"))
         initDate()
         initCalendar()
 
@@ -132,10 +136,12 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
 
                     Log.d("캘린더 초기화", "통신 상태 : 정상 통신 404")
 
-                    binding.diaryCalendarInsideFrg.setText("작성된 내용이 없습니다.")
-                    binding.goalTimeCalendarInsideFrg.text = ""
-                    binding.actualTimeCalendarInsideFrg.text = ""
 
+                    binding.diaryCalendarInsideFrg.setText("작성된 내용이 없습니다.")
+                    binding.goalTimeCalendarInsideFrg.text = "-"
+                    binding.actualTimeCalendarInsideFrg.text = "-"
+                    /*binding.pieView.percentage = 0.toFloat()
+                    binding.pieView.setInnerText("")*/
                 }
 
                 if (response.isSuccessful && response.body() != null) {
@@ -161,7 +167,10 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
                         val content = result.content
                         val score = result.score
 
+
+                        binding.pieView.setInnerTextVisibility(View.VISIBLE)
                         binding.pieView.percentage = score.toFloat()
+
 
                         diaryPk = result.diaryPk
 
@@ -268,7 +277,7 @@ class CalendarInsideFragment : Fragment(R.layout.fragment_calendar_inside) {
 
                     if (resultCode == success) {
 
-                        binding.diaryCalendarInsideFrg.setText("감사일기가 삭제되었어요.")
+                        binding.diaryCalendarInsideFrg.setText("작성된 내용이 없습니다.")
                         Toast.makeText(activity, "감사일기가 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
 
                         //감사일기 삭제하면 캘린더 내부 내용이 완전히 안뜸.
