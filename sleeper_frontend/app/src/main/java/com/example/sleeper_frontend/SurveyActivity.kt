@@ -12,6 +12,7 @@ import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.ActivitySurveyBinding
 import com.example.sleeper_frontend.dto.register.RegisterRequest
 import com.example.sleeper_frontend.dto.register.RegisterResponse
+import com.example.sleeper_frontend.screens.login.LoginActivity
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient

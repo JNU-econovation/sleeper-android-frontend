@@ -1,4 +1,4 @@
-package com.example.sleeper_frontend
+package com.example.sleeper_frontend.screens.login
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,10 @@ import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.sleeper_frontend.MainActivity
+import com.example.sleeper_frontend.R
+import com.example.sleeper_frontend.RegisterActivity
 import com.example.sleeper_frontend.api.INetworkService
 import com.example.sleeper_frontend.databinding.ActivityLoginBinding
 import com.example.sleeper_frontend.dto.login.LoginRequest
@@ -27,6 +31,7 @@ import java.net.CookieManager
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityLoginBinding
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -40,34 +45,32 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.i("GameFragment", "Called ViewModelProvider.get")
+        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+
         binding.activityLoginLayout.setBackgroundResource(R.drawable.login_background)
 
-        val loginPref = getPreferences(Context.MODE_PRIVATE)
-
-        if(loginPref.getString("userId", null) != null) {
-            init(loginPref)
-        }
+        binding.btnLoginAuto.isChecked = viewModel.isAutoLogin
+        binding.editLoginUserId.text = viewModel.userId
+        binding.editLoginUserId.text = viewModel.userPassword
 
         binding.btnLogin.setOnClickListener {
+
+            if(binding.btnLoginAuto.isChecked) {
+                viewModel.saveLoginInfo()
+            } else {
+                viewModel.deleteLoginInfo()
+            }
             doLogin()
+
         }
 
         binding.btnRegister.setOnClickListener {
+
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
+
         }
-    }
-
-    private fun init(sp : SharedPreferences) {
-        val userId = sp.getString("userId", null)
-        val userPw = sp.getString("userPw", null)
-
-        binding.editId.setText(userId)
-        binding.editPw.setText(userPw)
-
-        //# 추후 보완 예정 내용
-        //# 로그인 버튼을 누르지 않아도 자동 로그인
-        //# 로그인이 안되면 Toast message 띄우기
     }
 
     private fun getNetworkService(): INetworkService {
@@ -94,8 +97,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun doLogin() {
-        val userId : String = binding.editId.text.toString()
-        val userPassword : String = binding.editPw.text.toString()
+        val userId : String = binding.editLoginUserId.text.toString()
+        val userPassword : String = binding.editLoginUserPw.text.toString()
 
         val loginResponseCall = getNetworkService().getLoginResponse(LoginRequest(userId = userId, userPassword = userPassword))
 
