@@ -57,7 +57,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".screens.login.LoginActivity"
             android:exported="true" >
             <meta-data
                 android:name="android.app.lib_name"

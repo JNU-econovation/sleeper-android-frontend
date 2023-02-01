@@ -32,7 +32,7 @@
         android:layout_gravity="center_horizontal" >
 
         <EditText
-            android:id="@+id/edit_id"
+            android:id="@+id/edit_login_userId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
@@ -50,7 +50,7 @@
             android:imeOptions="actionNext" />
 
         <EditText
-            android:id="@+id/edit_pw"
+            android:id="@+id/edit_login_userPw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -67,6 +67,17 @@
             android:autofillHints="password"
             android:inputType="textPassword"
             android:imeOptions="actionDone" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/btn_login_auto"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="자동 로그인 여부"
+            android:textSize="12sp"
+            android:fontFamily="@font/font_the120"
+            android:textColor="@color/white_hint"
+            android:layout_marginStart="10dp"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
